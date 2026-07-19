@@ -25,9 +25,13 @@
       href="https://unpkg.com/aos@2.3.4/dist/aos.css">     
 </head>
 <body>
-    {% block content %}{% endblock %}
-    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
-    <script src="https://unpkg.com/aos@2.3.4/dist/aos.js"></script>
+      <div class="scroll-progress"></div>
+      <div class="mouse-glow"></div>
+      <canvas id="particles"></canvas>
+
+      {% block content %}{% endblock %}
+      <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+      <script src="https://unpkg.com/aos@2.3.4/dist/aos.js"></script>
 
       <script>
       AOS.init({

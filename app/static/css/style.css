@@ -49,3 +49,87 @@ a{
 ul{
     list-style:none;
 }
+
+/* ==========================================
+            SCROLL PROGRESS BAR
+========================================== */
+
+.scroll-progress{
+
+    position:fixed;
+
+    top:0;
+
+    left:0;
+
+    width:0%;
+
+    height:4px;
+
+    background:linear-gradient(
+        90deg,
+        #00F5FF,
+        #7B61FF
+    );
+
+    z-index:9999;
+
+    box-shadow:
+        0 0 15px #00F5FF,
+        0 0 25px #7B61FF;
+
+}
+
+/* ==========================================
+            MOUSE GLOW
+========================================== */
+
+.mouse-glow{
+
+    position:fixed;
+
+    width:420px;
+
+    height:420px;
+
+    border-radius:50%;
+
+    background:radial-gradient(
+        circle,
+        rgba(0,245,255,.18) 0%,
+        rgba(123,97,255,.10) 40%,
+        transparent 75%
+    );
+
+    pointer-events:none;
+
+    transform:translate(-50%,-50%);
+
+    z-index:0;
+
+    filter:blur(45px);
+
+    transition:
+        left .08s linear,
+        top .08s linear;
+
+}
+/* ==========================================
+            PARTICLE BACKGROUND
+========================================== */
+
+#particles{
+
+    position:fixed;
+
+    top:0;
+    left:0;
+
+    width:100%;
+    height:100%;
+
+    z-index:-1;
+
+    pointer-events:none;
+
+}

@@ -342,3 +342,99 @@
     }
 
 }
+
+/* ==========================================
+            FORM INPUTS
+========================================== */
+
+.form-input{
+
+    width:100%;
+
+    padding:18px 22px;
+
+    background:#101728;
+
+    border:1px solid rgba(255,255,255,.08);
+
+    border-radius:14px;
+
+    color:#fff;
+
+    font-size:16px;
+
+    outline:none;
+
+    transition:.3s;
+
+    font-family:inherit;
+
+}
+
+.form-input:focus{
+
+    border-color:#00F5FF;
+
+    box-shadow:0 0 15px rgba(0,245,255,.2);
+
+}
+
+textarea.form-input{
+
+    resize:vertical;
+
+    min-height:170px;
+
+}
+
+/* ==========================================
+            ERRORS
+========================================== */
+
+.form-error{
+
+    display:block;
+
+    margin-top:8px;
+
+    color:#ff6b6b;
+
+    font-size:14px;
+
+}
+
+/* ==========================================
+            FLASH MESSAGE
+========================================== */
+
+.flash-message{
+
+    margin-bottom:35px;
+
+    padding:18px 22px;
+
+    border-radius:14px;
+
+    font-weight:500;
+
+}
+
+.flash-message.success{
+
+    background:rgba(46,204,113,.15);
+
+    border:1px solid rgba(46,204,113,.35);
+
+    color:#2ecc71;
+
+}
+
+.flash-message.error{
+
+    background:rgba(231,76,60,.15);
+
+    border:1px solid rgba(231,76,60,.35);
+
+    color:#ff6b6b;
+
+}

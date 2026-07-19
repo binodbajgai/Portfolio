@@ -2,23 +2,34 @@ portfolio = {
     
     "personal": {
     "name": "Binod Bajgai",
-    "title": "Computer Science with AI Student",
-    "subtitle": "AI Developer | Python Developer | Flask Developer",
+
+    "title": "Computer Science with Artificial Intelligence Student",
+
+    "roles": [
+        "AI Developer",
+        "Python Developer",
+        "Flask Developer",
+        "Backend Developer"
+    ],
 
     "description": (
-        "I'm a Computer Science with Artificial Intelligence student passionate "
-        "about building modern web applications and AI-powered solutions."
+        "I'm a Computer Science with Artificial Intelligence student "
+        "passionate about building AI-powered applications, modern web "
+        "solutions, and clean user experiences using Python and Flask."
     ),
 
     "location": "Kathmandu, Nepal",
 
-    "email": "your-real-email@example.com",
+    "email": "your@email.com",
 
     "phone": "+977-98XXXXXXXX",
 
     "github": "https://github.com/bajgaibenod-sketch",
 
-    "linkedin": "https://linkedin.com/in/binod-bajgai"
+    "linkedin": "https://linkedin.com/in/binod-bajgai",
+
+    "cv": "#"
+
 },
 
 

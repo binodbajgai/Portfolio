@@ -3,349 +3,413 @@
 ========================================== */
 
 .hero{
-    min-height:calc(100vh - 80px);
-    display:flex;
-    align-items:center;
-    background:#070B1C;
-    padding:80px 8%;
     position:relative;
+    min-height:100vh;
+    padding:140px 8% 80px;
+    background:#070B1C;
     overflow:hidden;
+
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
 }
 
-/* Background Glows */
+/* Background Glow */
 
 .hero::before{
+
     content:"";
+
     position:absolute;
-    width:450px;
-    height:450px;
-    background:#00F5FF20;
+
+    width:600px;
+    height:600px;
+
+    background:#00F5FF18;
+
     filter:blur(180px);
-    left:-120px;
-    top:-80px;
+
+    left:-250px;
+    top:-120px;
+
 }
 
 .hero::after{
+
     content:"";
+
     position:absolute;
-    width:450px;
-    height:450px;
-    background:#7B61FF20;
+
+    width:500px;
+    height:500px;
+
+    background:#7B61FF18;
+
     filter:blur(180px);
-    right:-150px;
-    bottom:-120px;
-}
 
-.hero-container{
-
-    position:relative;
-    z-index:2;
-
-    width:100%;
-
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-    gap:80px;
+    right:-180px;
+    bottom:-150px;
 
 }
 
 /* ==========================================
-                LEFT SIDE
+            CONTAINER
+========================================== */
+
+.hero-container{
+
+    position:relative;
+
+    z-index:2;
+
+    max-width:1400px;
+
+    margin:auto;
+
+    width:100%;
+
+    display:grid;
+
+    grid-template-columns:1.1fr .9fr;
+
+    align-items:center;
+
+    gap:80px;
+
+}
+
+
+/* ==========================================
+            HERO CONTENT
 ========================================== */
 
 .hero-content{
 
-    flex:1;
+    max-width:650px;
 
 }
 
-.hero-intro{
+.hero-greeting{
+
+    display:inline-block;
 
     color:#00F5FF;
 
     font-size:20px;
 
-    margin-bottom:20px;
+    margin-bottom:18px;
+
+    font-weight:500;
 
 }
 
 .hero-content h1{
 
-    font-size:78px;
+    color:#fff;
 
-    line-height:1;
+    font-size:72px;
 
-    color:white;
+    line-height:1.05;
 
     margin-bottom:20px;
 
-    font-weight:800;
-
 }
 
-.hero-content h1 span{
-
-    color:#00F5FF;
-
-}
-
-.hero-content h2{
+.typing-text{
 
     color:#7B61FF;
 
-    font-size:28px;
+    font-size:34px;
 
-    margin-bottom:30px;
+    margin-bottom:28px;
 
-    font-weight:600;
+    min-height:42px;
 
 }
 
 .hero-description{
 
-    color:#B8B8B8;
+    color:#b7b7b7;
+
+    font-size:18px;
 
     line-height:1.9;
 
-    max-width:620px;
-
-    font-size:17px;
+    margin-bottom:40px;
 
 }
 
 /* ==========================================
-                BUTTONS
+            BUTTONS
 ========================================== */
 
 .hero-buttons{
 
     display:flex;
 
-    gap:20px;
-
-    margin-top:45px;
+    gap:18px;
 
     flex-wrap:wrap;
 
+    margin-bottom:40px;
+
 }
 
-.hero-buttons a{
+/* ==========================================
+            SOCIAL
+========================================== */
 
-    padding:16px 30px;
+.hero-social{
 
-    border-radius:50px;
+    display:flex;
+
+    gap:18px;
+
+}
+
+.hero-social a{
+
+    width:55px;
+
+    height:55px;
+
+    border-radius:50%;
 
     display:flex;
 
     align-items:center;
 
-    gap:10px;
+    justify-content:center;
 
-    font-weight:600;
-
-    transition:.35s;
-
-}
-
-.btn-primary{
-
-    background:#00F5FF;
-
-    color:#070B1C;
-
-}
-
-.btn-primary:hover{
-
-    transform:translateY(-6px);
-
-    box-shadow:0 15px 35px rgba(0,245,255,.35);
-
-}
-
-.btn-secondary{
-
-    border:2px solid #00F5FF;
+    text-decoration:none;
 
     color:#00F5FF;
-
-}
-
-.btn-secondary:hover{
-
-    background:#00F5FF;
-
-    color:#070B1C;
-
-}
-
-/* ==========================================
-                TECH STACK
-========================================== */
-
-.hero-tech{
-
-    display:flex;
-
-    flex-wrap:wrap;
-
-    gap:15px;
-
-    margin-top:45px;
-
-}
-
-.hero-tech span{
-
-    padding:10px 18px;
-
-    border-radius:30px;
 
     background:#101728;
 
-    border:1px solid rgba(255,255,255,.08);
-
-    color:#ddd;
+    font-size:22px;
 
     transition:.35s;
 
 }
 
-.hero-tech span:hover{
+.hero-social a:hover{
 
-    transform:translateY(-5px);
+    background:#00F5FF;
 
-    border-color:#00F5FF;
+    color:#070B1C;
 
-    color:#00F5FF;
+    transform:translateY(-6px);
 
 }
 
 /* ==========================================
-                IMAGE
+            HERO IMAGE
 ========================================== */
 
 .hero-image{
-
-    flex:1;
 
     display:flex;
 
     justify-content:center;
 
-}
-
-.image-wrapper{
+    align-items:center;
 
     position:relative;
 
 }
+
+.hero-image-wrapper{
+
+    position:relative;
+
+    width:420px;
+
+    height:420px;
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+
+    animation:floatImage 5s ease-in-out infinite;
+
+}
+
+/* ==========================================
+            GLOW
+========================================== */
 
 .hero-glow{
 
     position:absolute;
 
-    inset:0;
+    width:100%;
+
+    height:100%;
 
     border-radius:50%;
 
-    background:#00F5FF;
+    background:radial-gradient(circle,
+        rgba(0,245,255,.45),
+        rgba(123,97,255,.15),
+        transparent 75%);
 
-    filter:blur(120px);
+    filter:blur(40px);
 
-    opacity:.25;
-
-    animation:pulse 4s infinite;
-
-}
-
-.image-wrapper img{
-
-    width:420px;
-
-    height:520px;
-
-    object-fit:cover;
-
-    border-radius:35px;
-
-    border:2px solid #00F5FF;
-
-    position:relative;
-
-    z-index:2;
-
-    box-shadow:0 0 50px rgba(0,245,255,.25);
-
-    animation:floatImage 6s ease-in-out infinite;
+    z-index:1;
 
 }
 
-/* ==========================================
-            SCROLL INDICATOR
-========================================== */
+/* Decorative Ring */
 
-.scroll-down{
-
-    position:absolute;
-
-    bottom:30px;
-
-    left:50%;
-
-    transform:translateX(-50%);
-
-}
-
-.scroll-down span{
-
-    display:block;
-
-    width:24px;
-
-    height:40px;
-
-    border:2px solid #00F5FF;
-
-    border-radius:20px;
-
-    position:relative;
-
-}
-
-.scroll-down span::before{
+.hero-image-wrapper::before{
 
     content:"";
 
     position:absolute;
 
-    width:6px;
+    width:105%;
 
-    height:6px;
-
-    background:#00F5FF;
+    height:105%;
 
     border-radius:50%;
 
-    left:50%;
+    border:2px solid rgba(0,245,255,.25);
 
-    transform:translateX(-50%);
+    animation:rotateRing 15s linear infinite;
 
-    top:8px;
+}
 
-    animation:scrollWheel 2s infinite;
+/* Second Ring */
+
+.hero-image-wrapper::after{
+
+    content:"";
+
+    position:absolute;
+
+    width:115%;
+
+    height:115%;
+
+    border-radius:50%;
+
+    border:2px dashed rgba(123,97,255,.25);
+
+    animation:rotateRingReverse 18s linear infinite;
 
 }
 
 /* ==========================================
-                ANIMATIONS
+            PROFILE IMAGE
+========================================== */
+
+.hero-image img{
+
+    position:relative;
+
+    z-index:2;
+
+    width:360px;
+
+    height:360px;
+
+    object-fit:cover;
+
+    border-radius:50%;
+
+    border:6px solid rgba(255,255,255,.08);
+
+    box-shadow:
+        0 0 40px rgba(0,245,255,.25),
+        0 0 90px rgba(123,97,255,.12);
+
+    transition:.4s;
+
+}
+
+.hero-image img:hover{
+
+    transform:scale(1.05);
+
+}
+
+/* ==========================================
+            HERO STATS
+========================================== */
+
+.hero-stats{
+
+    display:grid;
+
+    grid-template-columns:repeat(3,1fr);
+
+    gap:30px;
+
+    margin-top:90px;
+
+    position:relative;
+
+    z-index:2;
+
+}
+
+.stat-card{
+
+    background:rgba(16,23,40,.75);
+
+    backdrop-filter:blur(18px);
+
+    border-radius:24px;
+
+    padding:30px;
+
+    text-align:center;
+
+    border:1px solid rgba(255,255,255,.06);
+
+    transition:.35s;
+
+}
+
+.stat-card:hover{
+
+    transform:translateY(-10px);
+
+    border-color:#00F5FF;
+
+    box-shadow:0 20px 45px rgba(0,245,255,.18);
+
+}
+
+.stat-card h3{
+
+    font-size:42px;
+
+    color:#00F5FF;
+
+    margin-bottom:10px;
+
+}
+
+.stat-card p{
+
+    color:#b8b8b8;
+
+    font-size:16px;
+
+}
+
+/* ==========================================
+            ANIMATIONS
 ========================================== */
 
 @keyframes floatImage{
 
     0%{
-        transform:translateY(0);
+        transform:translateY(0px);
     }
 
     50%{
@@ -353,112 +417,280 @@
     }
 
     100%{
-        transform:translateY(0);
+        transform:translateY(0px);
     }
 
 }
 
-@keyframes pulse{
+@keyframes rotateRing{
 
-    0%{
-        transform:scale(1);
+    from{
+        transform:rotate(0deg);
     }
 
-    50%{
-        transform:scale(1.08);
-    }
-
-    100%{
-        transform:scale(1);
+    to{
+        transform:rotate(360deg);
     }
 
 }
 
-@keyframes scrollWheel{
+@keyframes rotateRingReverse{
 
-    0%{
-        opacity:1;
-        top:8px;
+    from{
+        transform:rotate(360deg);
     }
 
-    100%{
-        opacity:0;
-        top:22px;
+    to{
+        transform:rotate(0deg);
     }
 
 }
 
 /* ==========================================
-                RESPONSIVE
+            TYPING CURSOR
 ========================================== */
 
-@media(max-width:1000px){
+.typing-cursor{
 
-.hero-container{
+    color:#00F5FF;
 
-    flex-direction:column-reverse;
-
-    text-align:center;
+    animation:blink .8s infinite;
 
 }
 
-.hero-description{
+@keyframes blink{
 
-    margin:auto;
+    50%{
+
+        opacity:0;
+
+    }
 
 }
 
-.hero-buttons{
+/* ==========================================
+            FLOATING TECH BADGES
+========================================== */
+
+.floating-tech{
+
+    position:absolute;
+
+    padding:10px 18px;
+
+    border-radius:40px;
+
+    background:rgba(16,23,40,.85);
+
+    backdrop-filter:blur(12px);
+
+    border:1px solid rgba(255,255,255,.08);
+
+    color:#fff;
+
+    font-size:14px;
+
+    font-weight:600;
+
+    box-shadow:0 10px 30px rgba(0,0,0,.25);
+
+    animation:floatBadge 4s ease-in-out infinite;
+
+    z-index:3;
+
+}
+
+/* Positions */
+
+.python{
+    top:-10px;
+    left:-30px;
+}
+
+.flask{
+    top:60px;
+    right:-50px;
+}
+
+.js{
+    bottom:70px;
+    left:-60px;
+}
+
+.ai{
+    bottom:-10px;
+    right:-30px;
+}
+
+.mysql{
+    top:180px;
+    left:-90px;
+}
+
+.git{
+    top:220px;
+    right:-80px;
+}
+
+/* Animation Delays */
+
+.flask{ animation-delay:.5s; }
+
+.js{ animation-delay:1s; }
+
+.ai{ animation-delay:1.5s; }
+
+.mysql{ animation-delay:2s; }
+
+.git{ animation-delay:2.5s; }
+
+@keyframes floatBadge{
+
+    0%{
+        transform:translateY(0px);
+    }
+
+    50%{
+        transform:translateY(-10px);
+    }
+
+    100%{
+        transform:translateY(0px);
+    }
+
+}
+
+/* ==========================================
+            ORBIT
+========================================== */
+
+.orbit{
+
+    position:absolute;
+
+    width:520px;
+
+    height:520px;
+
+    border-radius:50%;
+
+    animation:orbitRotate 28s linear infinite;
+
+}
+
+.orbit-icon{
+
+    position:absolute;
+
+    width:64px;
+
+    height:64px;
+
+    border-radius:50%;
+
+    display:flex;
 
     justify-content:center;
 
-}
+    align-items:center;
 
-.hero-tech{
+    font-size:28px;
 
-    justify-content:center;
+    color:#00F5FF;
 
-}
+    background:rgba(16,23,40,.9);
 
-.hero-content h1{
+    backdrop-filter:blur(18px);
 
-    font-size:58px;
+    border:1px solid rgba(255,255,255,.08);
 
-}
-
-.image-wrapper img{
-
-    width:320px;
-    height:400px;
+    box-shadow:0 10px 30px rgba(0,245,255,.15);
 
 }
 
-}
+.python{
 
-@media(max-width:600px){
-
-.hero{
-
-    padding:120px 8% 80px;
+    top:-20px;
+    left:50%;
+    transform:translateX(-50%);
 
 }
 
-.hero-content h1{
+.flask{
 
-    font-size:42px;
-
-}
-
-.hero-content h2{
-
-    font-size:22px;
+    top:80px;
+    right:20px;
 
 }
 
-.hero-description{
+.js{
 
-    font-size:15px;
+    top:50%;
+    right:-25px;
+    transform:translateY(-50%);
 
 }
 
+.ai{
+
+    bottom:80px;
+    right:20px;
+
 }
+
+.mysql{
+
+    bottom:-20px;
+    left:50%;
+    transform:translateX(-50%);
+
+}
+
+.git{
+
+    top:50%;
+    left:-25px;
+    transform:translateY(-50%);
+
+}
+
+@keyframes orbitRotate{
+
+    from{
+
+        transform:rotate(0deg);
+
+    }
+
+    to{
+
+        transform:rotate(360deg);
+
+    }
+
+}
+
+/* Keep icons upright while orbit rotates */
+
+.orbit-icon{
+
+    animation:keepUpright 28s linear infinite;
+
+}
+
+@keyframes keepUpright{
+
+    from{
+
+        transform:rotate(0deg);
+
+    }
+
+    to{
+
+        transform:rotate(-360deg);
+
+    }
+
+}
+

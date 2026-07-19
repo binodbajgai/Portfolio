@@ -2,84 +2,156 @@
 
     <div class="hero-container">
 
-        <!-- =========================
+        <!-- ==========================
                 LEFT CONTENT
-        ========================== -->
+        =========================== -->
 
         <div class="hero-content" data-aos="fade-right">
 
-            <p class="hero-intro">
+            <span class="hero-greeting">
                 👋 Hello, I'm
-            </p>
+            </span>
 
             <h1>
-                <span>{{ portfolio.personal.name.split()[0] }}</span><br>
-                {{ portfolio.personal.name.split()[1] }}
+                {{ portfolio.personal.name }}
             </h1>
 
-            <h2>{{ portfolio.personal.subtitle }}</h2>
+            <h2 class="typing-text">
+                <span id="typing-role"></span>
+                <span class="typing-cursor">|</span>
+            </h2>
 
             <p class="hero-description">
                 {{ portfolio.personal.description }}
             </p>
 
-            <!-- Buttons -->
-
             <div class="hero-buttons">
 
                 <a href="#projects" class="btn-primary">
-                    <i class="fa-solid fa-code"></i>
                     View Projects
+                    <i class="fa-solid fa-arrow-right"></i>
                 </a>
 
-                <a href="#" class="btn-secondary">
+                <a href="{{ portfolio.personal.cv }}"
+                   class="btn-secondary"
+                   target="_blank">
+
                     <i class="fa-solid fa-download"></i>
+
                     Download CV
+
                 </a>
 
             </div>
 
-            <!-- Tech Pills -->
+            <div class="hero-social">
 
-            <div class="hero-tech">
+                <a href="{{ portfolio.personal.github }}"
+                   target="_blank">
 
-                {% for skill in portfolio.skills[:6] %}
+                    <i class="fa-brands fa-github"></i>
 
-                <span>{{ skill.name }}</span>
+                </a>
 
-                {% endfor %}
+                <a href="{{ portfolio.personal.linkedin }}"
+                   target="_blank">
+
+                    <i class="fa-brands fa-linkedin"></i>
+
+                </a>
+
+                <a href="mailto:{{ portfolio.personal.email }}">
+
+                    <i class="fa-solid fa-envelope"></i>
+
+                </a>
 
             </div>
 
         </div>
 
-        <!-- =========================
-                RIGHT IMAGE
-        ========================== -->
+        <!-- ==========================
+                RIGHT SIDE
+        =========================== -->
 
         <div class="hero-image" data-aos="fade-left">
 
-            <div class="image-wrapper">
+            <div class="hero-image-wrapper">
 
-                <div class="hero-glow"></div>
+                <div class="hero-image-wrapper">
 
-                <img
-                    src="{{ url_for('static', filename='images/binod.jpeg') }}"
-                    alt="{{ portfolio.personal.name }}"
-                >
-
+                    <div class="hero-glow"></div>
+                
+                    <img
+                        src="{{ url_for('static', filename='images/binod.jpeg') }}"
+                        alt="Binod Bajgai">
+                
+                    <div class="orbit orbit-one">
+                
+                        <div class="orbit-icon python">
+                            <i class="fa-brands fa-python"></i>
+                        </div>
+                
+                        <div class="orbit-icon flask">
+                            <i class="fa-solid fa-flask"></i>
+                        </div>
+                
+                        <div class="orbit-icon js">
+                            <i class="fa-brands fa-js"></i>
+                        </div>
+                
+                        <div class="orbit-icon ai">
+                            🤖
+                        </div>
+                
+                        <div class="orbit-icon mysql">
+                            <i class="fa-solid fa-database"></i>
+                        </div>
+                
+                        <div class="orbit-icon git">
+                            <i class="fa-brands fa-git-alt"></i>
+                        </div>
+                
+                    </div>
+                
+                </div>
+            
             </div>
 
         </div>
 
     </div>
 
-    <!-- Scroll Indicator -->
+    <!-- ==========================
+            STATS
+    =========================== -->
 
-    <a href="#about" class="scroll-down">
+    <div class="hero-stats">
 
-        <span></span>
+        <div class="stat-card">
 
-    </a>
+            <h3>5+</h3>
+
+            <p>Projects</p>
+
+        </div>
+
+        <div class="stat-card">
+
+            <h3>8+</h3>
+
+            <p>Technologies</p>
+
+        </div>
+
+        <div class="stat-card">
+
+            <h3>2025</h3>
+
+            <p>Started Journey</p>
+
+        </div>
+
+    </div>
 
 </section>
