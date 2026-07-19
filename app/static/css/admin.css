@@ -1,0 +1,258 @@
+/* ==========================================
+                ADMIN DASHBOARD
+========================================== */
+
+.admin-dashboard{
+
+    padding:120px 8%;
+    color:#ffffff;
+
+}
+
+.admin-dashboard h1{
+
+    margin-bottom:40px;
+    font-size:42px;
+
+}
+
+/* ==========================================
+                TABLE WRAPPER
+========================================== */
+
+.table-wrapper{
+
+    overflow-x:auto;
+    border-radius:16px;
+
+}
+
+/* ==========================================
+                TABLE
+========================================== */
+
+.admin-dashboard table{
+
+    width:100%;
+    border-collapse:collapse;
+    table-layout:fixed;
+    background:#101728;
+    border-radius:16px;
+    overflow:hidden;
+
+}
+
+/* ==========================================
+                HEADER
+========================================== */
+
+.admin-dashboard th{
+
+    background:#00F5FF;
+    color:#07101F;
+    font-weight:700;
+    text-align:left;
+    padding:18px 20px;
+
+}
+
+/* ==========================================
+                CELLS
+========================================== */
+
+.admin-dashboard td{
+
+    padding:18px 20px;
+    color:#ffffff;
+    vertical-align:middle;
+    border-bottom:1px solid rgba(255,255,255,.08);
+    overflow:hidden;
+    text-overflow:ellipsis;
+    white-space:nowrap;
+
+}
+
+.admin-dashboard tr:hover{
+
+    background:#17213A;
+
+}
+
+/* ==========================================
+                COLUMN WIDTHS
+========================================== */
+
+/* Name */
+
+.admin-dashboard th:nth-child(1),
+.admin-dashboard td:nth-child(1){
+
+    width:18%;
+
+}
+
+/* Email */
+
+.admin-dashboard th:nth-child(2),
+.admin-dashboard td:nth-child(2){
+
+    width:30%;
+
+}
+
+/* Subject */
+
+.admin-dashboard th:nth-child(3),
+.admin-dashboard td:nth-child(3){
+
+    width:20%;
+
+}
+
+/* Date */
+
+.admin-dashboard th:nth-child(4),
+.admin-dashboard td:nth-child(4){
+
+    width:14%;
+    text-align:center;
+
+}
+
+/* Action */
+
+.admin-dashboard th:nth-child(5),
+.admin-dashboard td:nth-child(5){
+
+    width:18%;
+    text-align:center;
+
+}
+
+/* ==========================================
+                ACTION BUTTONS
+========================================== */
+
+.action-buttons{
+
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    gap:12px;
+
+}
+
+.action-buttons form{
+
+    margin:0;
+
+}
+
+/* ==========================================
+                PRIMARY BUTTON
+========================================== */
+
+.btn-primary{
+
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+
+    min-width:85px;
+    height:40px;
+
+    background:#00F5FF;
+    color:#07101F;
+
+    border-radius:8px;
+    text-decoration:none;
+    font-weight:600;
+
+    transition:.3s;
+
+}
+
+.btn-primary:hover{
+
+    background:#00d7df;
+
+}
+
+/* ==========================================
+                DELETE BUTTON
+========================================== */
+
+.btn-danger{
+
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+
+    min-width:85px;
+    height:40px;
+
+    background:#ff3b3b;
+    color:#ffffff;
+
+    border:none;
+    border-radius:8px;
+
+    font-size:14px;
+    font-weight:600;
+
+    cursor:pointer;
+
+    transition:.3s;
+
+}
+
+.btn-danger:hover{
+
+    background:#d92c2c;
+
+}
+
+/* ==========================================
+                VIEW MESSAGE
+========================================== */
+
+.message-box{
+
+    margin-top:40px;
+    padding:40px;
+
+    background:#101728;
+
+    border-radius:20px;
+
+    border:1px solid rgba(255,255,255,.08);
+
+}
+
+.message-box hr{
+
+    margin:30px 0;
+    border:none;
+    border-top:1px solid rgba(255,255,255,.08);
+
+}
+
+/* ==========================================
+                RESPONSIVE
+========================================== */
+
+@media(max-width:900px){
+
+    .admin-dashboard{
+
+        padding:80px 5%;
+
+    }
+
+    .admin-dashboard table{
+
+        min-width:900px;
+
+    }
+
+}

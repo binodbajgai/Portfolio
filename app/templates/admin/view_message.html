@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+
+{% block title %}
+View Message
+{% endblock %}
+
+{% block content %}
+
+<section class="admin-dashboard">
+
+    <h1>{{ message.subject }}</h1>
+
+    <div class="message-box">
+
+        <h3>{{ message.name }}</h3>
+
+        <p>
+            <strong>Email:</strong>
+            {{ message.email }}
+        </p>
+
+        <p>
+            <strong>Date:</strong>
+            {{ message.created_at.strftime("%d %B %Y %H:%M") }}
+        </p>
+
+        <hr>
+
+        <p>{{ message.message }}</p>
+
+        <br>
+
+        <a
+            href="{{ url_for('admin.dashboard') }}"
+            class="btn-secondary">
+
+            ← Back
+
+        </a>
+
+    </div>
+
+</section>
+
+{% endblock %}

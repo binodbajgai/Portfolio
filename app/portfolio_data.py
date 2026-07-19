@@ -20,9 +20,9 @@ portfolio = {
 
     "location": "Kathmandu, Nepal",
 
-    "email": "your@email.com",
+    "email": "bajgaibenod@email.com",
 
-    "phone": "+977-98XXXXXXXX",
+    "phone": "+977-9848552200",
 
     "github": "https://github.com/bajgaibenod-sketch",
 
