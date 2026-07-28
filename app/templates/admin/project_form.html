@@ -1,0 +1,58 @@
+{% extends "base.html" %}
+
+{% block title %}
+{{ title }}
+{% endblock %}
+
+{% block content %}
+
+<section class="admin-dashboard">
+
+    <h1>{{ title }}</h1>
+
+    <form method="POST" class="admin-form">
+
+        {{ form.hidden_tag() }}
+
+        <div class="input-group">
+            {{ form.title.label }}
+            {{ form.title(class="form-control") }}
+        </div>
+
+        <div class="input-group">
+            {{ form.subtitle.label }}
+            {{ form.subtitle(class="form-control") }}
+        </div>
+
+        <div class="input-group">
+            {{ form.description.label }}
+            {{ form.description(class="form-control", rows="6") }}
+        </div>
+
+        <div class="input-group">
+            {{ form.image.label }}
+            {{ form.image(class="form-control") }}
+        </div>
+
+        <div class="input-group">
+            {{ form.github.label }}
+            {{ form.github(class="form-control") }}
+        </div>
+
+        <div class="input-group">
+            {{ form.demo.label }}
+            {{ form.demo(class="form-control") }}
+        </div>
+
+        <div class="input-group">
+            {{ form.tech.label }}
+            {{ form.tech(class="form-control") }}
+        </div>
+
+        {{ form.submit(class="btn-primary") }}
+
+    </form>
+
+</section>
+
+{% endblock %}

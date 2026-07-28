@@ -17,7 +17,10 @@ def create_app():
     app.register_blueprint(admin)
 
     with app.app_context():
+
         from .models.message import Message
+        from .models.project import Project
+
         db.create_all()
 
     return app

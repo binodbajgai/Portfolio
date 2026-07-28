@@ -25,7 +25,7 @@
 
         <div class="projects-grid">
 
-            {% for project in portfolio.projects %}
+            {% for project in projects %}
 
             <div class="project-card {% if loop.index is even %}reverse{% endif %}"
                  data-aos="{% if loop.index is odd %}fade-right{% else %}fade-left{% endif %}">
@@ -59,12 +59,12 @@
 
                     <div class="tech-stack">
 
-                        {% for tech in project.tech %}
-
-                            <span>{{ tech }}</span>
-
+                        {% for tech in project.tech.split(",") %}
+                    
+                            <span>{{ tech.strip() }}</span>
+                    
                         {% endfor %}
-
+                    
                     </div>
 
                     <div class="project-buttons">

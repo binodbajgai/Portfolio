@@ -1,4 +1,6 @@
 from .models.message import Message
+from .models.project import Project
+from .forms import ProjectForm
 from .database import db
 from flask import (
     Blueprint,
@@ -84,6 +86,106 @@ def delete_message(message_id):
     db.session.commit()
 
     return redirect(url_for("admin.dashboard"))
+
+
+@admin.route("/projects")
+def projects():
+
+    if not session.get("admin_logged_in"):
+        return redirect(url_for("admin.login"))
+
+    projects = Project.query.order_by(Project.id.desc()).all()
+
+    return render_template(
+        "admin/projects.html",
+        projects=projects
+    )
+
+@admin.route("/projects/add", methods=["GET", "POST"])
+def add_project():
+
+    if not session.get("admin_logged_in"):
+        return redirect(url_for("admin.login"))
+
+    form = ProjectForm()
+
+    if form.validate_on_submit():
+
+        project = Project(
+
+            title=form.title.data,
+            subtitle=form.subtitle.data,
+            description=form.description.data,
+            image=form.image.data,
+            github=form.github.data,
+            demo=form.demo.data,
+            tech=form.tech.data
+
+        )
+
+        db.session.add(project)
+        db.session.commit()
+
+
+
+        return redirect(url_for("admin.projects"))
+
+    return render_template(
+        "admin/project_form.html",
+        form=form,
+        title="Add Project"
+    )
+
+@admin.route("/projects/edit/<int:project_id>", methods=["GET", "POST"])
+def edit_project(project_id):
+
+    if not session.get("admin_logged_in"):
+        return redirect(url_for("admin.login"))
+
+    project = Project.query.get_or_404(project_id)
+
+    form = ProjectForm(obj=project)
+
+    if form.validate_on_submit():
+
+        form.populate_obj(project)
+
+        db.session.commit()
+
+        flash(
+            "Project updated successfully!",
+            "success"
+        )
+
+        return redirect(url_for("admin.projects"))
+
+    return render_template(
+        "admin/project_form.html",
+        form=form,
+        title="Edit Project"
+    )
+
+@admin.route("/projects/delete/<int:project_id>", methods=["POST"])
+def delete_project(project_id):
+
+    if not session.get("admin_logged_in"):
+        return redirect(url_for("admin.login"))
+
+    project = Project.query.get_or_404(project_id)
+
+    db.session.delete(project)
+    db.session.commit()
+
+    flash(
+        "Project deleted successfully!",
+        "success"
+    )
+
+    return redirect(url_for("admin.projects"))
+
+
+
+
 
 
 

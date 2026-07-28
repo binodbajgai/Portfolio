@@ -4,6 +4,7 @@ from .database import db
 from .models.message import Message
 from .portfolio_data import portfolio
 from .forms import ContactForm
+from .models.project import Project
 
 main = Blueprint("main", __name__)
 
@@ -32,8 +33,11 @@ def home():
 
         return redirect(url_for("main.home"))
 
+    projects = Project.query.order_by(Project.id.desc()).all()
+
     return render_template(
         "index.html",
         portfolio=portfolio,
-        form=form
+        form=form,
+        projects=projects
     )
