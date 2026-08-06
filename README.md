@@ -36,33 +36,6 @@ A personal portfolio website built with Flask, featuring a public-facing site wi
 
 ---
 
-## Project Structure
-
-```
-binod-portfolio/
-├── app/
-│   ├── __init__.py          # App factory, CSRF setup, security headers
-│   ├── admin.py              # Admin routes (login, dashboard, project/message CRUD)
-│   ├── routes.py             # Public routes
-│   ├── forms.py               # WTForms definitions
-│   ├── database.py           # SQLAlchemy instance
-│   ├── models/
-│   │   ├── project.py
-│   │   └── message.py
-│   ├── templates/
-│   │   ├── base.html
-│   │   ├── index.html
-│   │   ├── sections/
-│   │   └── admin/
-│   └── static/
-├── config.py                 # App configuration, reads all secrets from env vars
-├── wsgi.py                   # Entry point used by Gunicorn
-├── Procfile                  # Render start command
-├── requirements.txt
-└── README.md
-```
-
----
 
 ## Environment Variables
 
