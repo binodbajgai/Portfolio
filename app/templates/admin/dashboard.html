@@ -8,18 +8,141 @@ Admin Dashboard
 
 <section class="admin-dashboard">
 
-    <h1>Contact Messages</h1>
-    <div class="dashboard-actions">
+    <div class="admin-hero">
 
-        <a href="{{ url_for('admin.projects') }}"
-           class="btn-primary">
-    
-            Manage Projects
-    
-        </a>
-    
+        <div class="hero-copy">
+
+            <p class="eyebrow">Admin Console</p>
+            <h1>Contact Inbox</h1>
+            <p class="hero-subtitle">
+                Review incoming messages, manage portfolio content, and keep the site updated from one place.
+            </p>
+
+        </div>
+
+        <div class="dashboard-actions">
+
+            <a href="{{ url_for('admin.projects') }}"
+               class="btn-primary">
+
+                Manage Projects
+
+            </a>
+
+            <a href="{{ url_for('admin.logout') }}"
+               class="btn-secondary">
+
+                Logout
+
+            </a>
+
+        </div>
+
     </div>
-    
+
+    {% with flash_messages = get_flashed_messages(with_categories=true) %}
+
+        {% if flash_messages %}
+
+            <div class="flash-stack">
+
+                {% for category, message in flash_messages %}
+
+                    <div class="flash-message flash-{{ category }}">
+
+                        {{ message }}
+
+                    </div>
+
+                {% endfor %}
+
+            </div>
+
+        {% endif %}
+
+    {% endwith %}
+
+    <div class="dashboard-panels">
+
+        <article class="stats-card">
+
+            <span class="stats-label">Total messages</span>
+            <strong>{{ messages|length }}</strong>
+            <p>Messages currently in the inbox.</p>
+
+        </article>
+
+        <article class="stats-card stats-card-accent">
+
+            <span class="stats-label">Latest activity</span>
+
+            {% if messages %}
+
+                <strong>{{ messages[0].created_at.strftime("%d %b %Y") }}</strong>
+
+                <p>{{ messages[0].subject }}</p>
+
+            {% else %}
+
+                <strong>No messages</strong>
+                <p>The inbox is empty right now.</p>
+
+            {% endif %}
+
+        </article>
+
+        <aside class="settings-panel">
+
+            <div class="panel-header">
+
+                <p class="eyebrow">Settings</p>
+                <h2>Admin Tools</h2>
+
+            </div>
+
+            <ul class="settings-list">
+
+                <li>
+
+                    <span>Project workflow</span>
+                    <strong>Ready</strong>
+
+                </li>
+
+                <li>
+
+                    <span>Security</span>
+                    <strong>CSRF, secure cookies, hashed login</strong>
+
+                </li>
+
+                <li>
+
+                    <span>Session</span>
+                    <strong>Browser-only access</strong>
+
+                </li>
+
+            </ul>
+
+        </aside>
+
+    </div>
+
+    <div class="messages-panel">
+
+        <div class="section-header">
+
+            <div>
+
+                <p class="eyebrow">Messages</p>
+                <h2>Contact Requests</h2>
+
+            </div>
+
+            <span class="section-meta">{{ messages|length }} total</span>
+
+        </div>
 
     <div class="table-wrapper">
 
@@ -92,7 +215,7 @@ Admin Dashboard
 
                 <tr>
 
-                    <td colspan="5" style="text-align:center; padding:40px; color:#b7b7b7;">
+                    <td colspan="5" class="empty-state">
 
                         No contact messages yet.
 
@@ -105,6 +228,8 @@ Admin Dashboard
             </tbody>
 
         </table>
+
+    </div>
 
     </div>
 
