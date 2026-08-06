@@ -109,8 +109,9 @@
                         <h3>GitHub</h3>
 
                         <p>
-                            <a href="{{ portfolio.personal.github }}"
-                               target="_blank">
+                        <a href="{{ portfolio.personal.github }}"
+                               target="_blank"
+                               rel="noopener noreferrer">
                                 Visit Profile
                             </a>
                         </p>
@@ -132,8 +133,9 @@
                         <h3>LinkedIn</h3>
 
                         <p>
-                            <a href="{{ portfolio.personal.linkedin }}"
-                               target="_blank">
+                        <a href="{{ portfolio.personal.linkedin }}"
+                               target="_blank"
+                               rel="noopener noreferrer">
                                 View Profile
                             </a>
                         </p>
@@ -146,11 +148,11 @@
 
                 <div class="social-links">
 
-                    <a href="{{ portfolio.personal.github }}" target="_blank">
+                    <a href="{{ portfolio.personal.github }}" target="_blank" rel="noopener noreferrer" aria-label="GitHub profile">
                         <i class="fa-brands fa-github"></i>
                     </a>
 
-                    <a href="{{ portfolio.personal.linkedin }}" target="_blank">
+                    <a href="{{ portfolio.personal.linkedin }}" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn profile">
                         <i class="fa-brands fa-linkedin"></i>
                     </a>
 
@@ -171,50 +173,49 @@
                 {{ form.hidden_tag() }}
             
                 <div class="input-group">
-            
+                    {{ form.name.label(class="form-label") }}
                     {{ form.name(
                         placeholder="Your Name",
-                        class="form-input"
+                        class="form-input",
+                        id="contact-name"
                     ) }}
-            
                     {% for error in form.name.errors %}
                         <small class="form-error">{{ error }}</small>
                     {% endfor %}
-            
                 </div>
             
                 <div class="input-group">
-            
+                    {{ form.email.label(class="form-label") }}
                     {{ form.email(
                         placeholder="Your Email",
-                        class="form-input"
+                        class="form-input",
+                        id="contact-email",
+                        type="email"
                     ) }}
-            
                     {% for error in form.email.errors %}
                         <small class="form-error">{{ error }}</small>
                     {% endfor %}
-            
                 </div>
             
                 <div class="input-group">
-            
+                    {{ form.subject.label(class="form-label") }}
                     {{ form.subject(
                         placeholder="Subject",
-                        class="form-input"
+                        class="form-input",
+                        id="contact-subject"
                     ) }}
-            
                     {% for error in form.subject.errors %}
                         <small class="form-error">{{ error }}</small>
                     {% endfor %}
-            
                 </div>
             
                 <div class="input-group">
-            
+                    {{ form.message.label(class="form-label") }}
                     {{ form.message(
                         rows="7",
                         placeholder="Your Message",
-                        class="form-input"
+                        class="form-input",
+                        id="contact-message"
                     ) }}
             
                     {% for error in form.message.errors %}

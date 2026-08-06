@@ -34,8 +34,9 @@
 
                 <div class="project-image">
 
-                    <img src="{{ url_for('static', filename=project.image) }}"
-                         alt="{{ project.title }}">
+                    <img src="{{ url_for('static', filename=project.image or 'images/binod_cv.png') }}"
+                         alt="{{ project.title or 'Project image' }}"
+                         loading="lazy">
 
                 </div>
 
@@ -48,44 +49,50 @@
                     </div>
 
                     <span class="project-subtitle">
-                        {{ project.subtitle }}
+                        {{ project.subtitle or 'No subtitle provided' }}
                     </span>
 
                     <h3>{{ project.title }}</h3>
 
                     <p>
-                        {{ project.description }}
+                        {{ project.description or 'No description available.' }}
                     </p>
 
                     <div class="tech-stack">
 
-                        {% for tech in project.tech.split(",") %}
-                    
+                        {% for tech in (project.tech or '').split(",") if tech.strip() %}
                             <span>{{ tech.strip() }}</span>
-                    
+                        {% else %}
+                            <span>General</span>
                         {% endfor %}
-                    
+
                     </div>
 
                     <div class="project-buttons">
 
-                        <a href="{{ project.github }}"
-                           class="btn-secondary"
-                           target="_blank">
+                        {% if project.github %}
+                            <a href="{{ project.github }}"
+                               class="btn-secondary"
+                               target="_blank"
+                               rel="noopener noreferrer">
 
-                            <i class="fa-brands fa-github"></i>
-                            GitHub
+                                <i class="fa-brands fa-github"></i>
+                                GitHub
 
-                        </a>
+                            </a>
+                        {% endif %}
 
-                        <a href="{{ project.demo }}"
-                           class="btn-primary"
-                           target="_blank">
+                        {% if project.demo %}
+                            <a href="{{ project.demo }}"
+                               class="btn-primary"
+                               target="_blank"
+                               rel="noopener noreferrer">
 
-                            Live Demo
-                            <i class="fa-solid fa-arrow-right"></i>
+                                Live Demo
+                                <i class="fa-solid fa-arrow-right"></i>
 
-                        </a>
+                            </a>
+                        {% endif %}
 
                     </div>
 

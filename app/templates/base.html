@@ -5,6 +5,22 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <title>{% block title %}Binod Bajgai{% endblock %}</title>
+    <meta name="description"
+          content="Binod Bajgai's portfolio showcasing Python, Flask, AI, and modern web development projects.">
+    <meta property="og:title" content="Binod Bajgai">
+    <meta property="og:description"
+          content="Portfolio showcasing Python, Flask, AI, and modern web development projects.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="{{ request.base_url }}">
+    <meta property="og:image" content="{{ url_for('static', filename='images/binod.jpeg', _external=True) }}">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Binod Bajgai">
+    <meta name="twitter:description"
+          content="Portfolio showcasing Python, Flask, AI, and modern web development projects.">
+    <meta name="twitter:image" content="{{ url_for('static', filename='images/binod.jpeg', _external=True) }}">
+    <meta name="robots" content="index, follow">
+    <meta name="theme-color" content="#070B1C">
+    <link rel="icon" type="image/jpeg" href="{{ url_for('static', filename='images/binod.jpeg') }}">
 
     <!-- Google Font -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -25,11 +41,14 @@
       href="https://unpkg.com/aos@2.3.4/dist/aos.css">     
 </head>
 <body>
+      <a class="skip-link" href="#main-content">Skip to content</a>
       <div class="scroll-progress"></div>
       <div class="mouse-glow"></div>
       <canvas id="particles"></canvas>
 
-      {% block content %}{% endblock %}
+      <main id="main-content">
+          {% block content %}{% endblock %}
+      </main>
       <script src="{{ url_for('static', filename='js/main.js') }}"></script>
       <script src="https://unpkg.com/aos@2.3.4/dist/aos.js"></script>
 

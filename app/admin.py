@@ -196,6 +196,11 @@ def add_project():
             current_app.logger.exception("Failed to add project")
             abort(500)
 
+        flash(
+            "Project added successfully!",
+            "success"
+        )
+
         return redirect(url_for("admin.projects"))
 
     return render_template(

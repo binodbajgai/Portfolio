@@ -8,20 +8,76 @@ Projects
 
 <section class="admin-dashboard">
 
-    <div class="dashboard-header">
+    <div class="admin-hero">
 
-        <h1>Projects</h1>
+        <div class="hero-copy">
 
-        <a href="{{ url_for('admin.add_project') }}"
-           class="btn-primary">
+            <p class="eyebrow">Admin Console</p>
+            <h1>Projects</h1>
+            <p class="hero-subtitle">
+                Manage the portfolio project list, update links, and keep the showcase current.
+            </p>
 
-            + Add Project
+        </div>
 
-        </a>
+        <div class="dashboard-actions">
+
+            <a href="{{ url_for('admin.dashboard') }}"
+               class="btn-secondary">
+
+                Back to Inbox
+
+            </a>
+
+            <a href="{{ url_for('admin.add_project') }}"
+               class="btn-primary">
+
+                + Add Project
+
+            </a>
+
+        </div>
 
     </div>
 
-    <div class="table-wrapper">
+    {% with flash_messages = get_flashed_messages(with_categories=true) %}
+
+        {% if flash_messages %}
+
+            <div class="flash-stack">
+
+                {% for category, message in flash_messages %}
+
+                    <div class="flash-message flash-{{ category }}">
+
+                        {{ message }}
+
+                    </div>
+
+                {% endfor %}
+
+            </div>
+
+        {% endif %}
+
+    {% endwith %}
+
+    <div class="messages-panel">
+
+        <div class="section-header">
+
+            <div>
+
+                <p class="eyebrow">Library</p>
+                <h2>Portfolio Projects</h2>
+
+            </div>
+
+            <span class="section-meta">{{ projects|length }} total</span>
+
+        </div>
+
+        <div class="table-wrapper">
 
         <table>
 
@@ -85,11 +141,11 @@ Projects
 
                 </tr>
 
-            {% else %}
+                {% else %}
 
                 <tr>
 
-                    <td colspan="4" style="text-align:center;padding:40px;">
+                    <td colspan="4" class="empty-state">
 
                         No projects found.
 
@@ -102,6 +158,8 @@ Projects
             </tbody>
 
         </table>
+
+        </div>
 
     </div>
 

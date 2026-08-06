@@ -5,6 +5,16 @@ from dotenv import load_dotenv
 load_dotenv()
 
 
+def _bool_env(name, default=False):
+
+    value = os.getenv(name)
+
+    if value is None:
+        return default
+
+    return value.strip().lower() not in {"0", "false", "no", "off"}
+
+
 def _required_env(name):
 
     value = os.getenv(name)
@@ -51,7 +61,7 @@ class Config:
     ADMIN_USERNAME = _required_env("ADMIN_USERNAME")
     ADMIN_PASSWORD_HASH = _required_env("ADMIN_PASSWORD_HASH")
 
-    SESSION_COOKIE_SECURE = True
+    SESSION_COOKIE_SECURE = _bool_env("SESSION_COOKIE_SECURE", default=True)
     SESSION_COOKIE_HTTPONLY = True
     SESSION_COOKIE_SAMESITE = "Lax"
     PERMANENT_SESSION_LIFETIME = timedelta(hours=8)

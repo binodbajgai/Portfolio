@@ -8,50 +8,98 @@
 
 <section class="admin-dashboard">
 
-    <h1>{{ title }}</h1>
+    <div class="admin-hero">
 
-    <form method="POST" class="admin-form">
+        <div class="hero-copy">
 
-        {{ form.hidden_tag() }}
+            <p class="eyebrow">Portfolio Admin</p>
+            <h1>{{ title }}</h1>
+            <p class="hero-subtitle">
+                Update project details, media, and links from one form.
+            </p>
 
-        <div class="input-group">
-            {{ form.title.label }}
-            {{ form.title(class="form-control") }}
         </div>
 
-        <div class="input-group">
-            {{ form.subtitle.label }}
-            {{ form.subtitle(class="form-control") }}
+        <div class="dashboard-actions">
+
+            <a href="{{ url_for('admin.projects') }}"
+               class="btn-secondary">
+
+                Back to Projects
+
+            </a>
+
         </div>
 
-        <div class="input-group">
-            {{ form.description.label }}
-            {{ form.description(class="form-control", rows="6") }}
-        </div>
+    </div>
 
-        <div class="input-group">
-            {{ form.image.label }}
-            {{ form.image(class="form-control") }}
-        </div>
+    <div class="messages-panel">
 
-        <div class="input-group">
-            {{ form.github.label }}
-            {{ form.github(class="form-control") }}
-        </div>
+        <form method="POST" enctype="multipart/form-data" class="admin-form">
 
-        <div class="input-group">
-            {{ form.demo.label }}
-            {{ form.demo(class="form-control") }}
-        </div>
+            {{ form.hidden_tag() }}
 
-        <div class="input-group">
-            {{ form.tech.label }}
-            {{ form.tech(class="form-control") }}
-        </div>
+            <div class="input-group">
+                {{ form.title.label }}
+                {{ form.title(class="form-control") }}
+                {% for error in form.title.errors %}
+                    <small class="form-error">{{ error }}</small>
+                {% endfor %}
+            </div>
 
-        {{ form.submit(class="btn-primary") }}
+            <div class="input-group">
+                {{ form.subtitle.label }}
+                {{ form.subtitle(class="form-control") }}
+                {% for error in form.subtitle.errors %}
+                    <small class="form-error">{{ error }}</small>
+                {% endfor %}
+            </div>
 
-    </form>
+            <div class="input-group">
+                {{ form.description.label }}
+                {{ form.description(class="form-control", rows="6") }}
+                {% for error in form.description.errors %}
+                    <small class="form-error">{{ error }}</small>
+                {% endfor %}
+            </div>
+
+            <div class="input-group">
+                {{ form.image.label }}
+                {{ form.image(class="form-control") }}
+                {% for error in form.image.errors %}
+                    <small class="form-error">{{ error }}</small>
+                {% endfor %}
+            </div>
+
+            <div class="input-group">
+                {{ form.github.label }}
+                {{ form.github(class="form-control") }}
+                {% for error in form.github.errors %}
+                    <small class="form-error">{{ error }}</small>
+                {% endfor %}
+            </div>
+
+            <div class="input-group">
+                {{ form.demo.label }}
+                {{ form.demo(class="form-control") }}
+                {% for error in form.demo.errors %}
+                    <small class="form-error">{{ error }}</small>
+                {% endfor %}
+            </div>
+
+            <div class="input-group">
+                {{ form.tech.label }}
+                {{ form.tech(class="form-control") }}
+                {% for error in form.tech.errors %}
+                    <small class="form-error">{{ error }}</small>
+                {% endfor %}
+            </div>
+
+            {{ form.submit(class="btn-primary") }}
+
+        </form>
+
+    </div>
 
 </section>
 

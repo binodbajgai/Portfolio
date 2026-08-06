@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+
+{% block title %}Page Not Found{% endblock %}
+
+{% block content %}
+
+<section class="error-page">
+
+    <div class="error-card">
+
+        <p class="error-code">404</p>
+        <h1>Page not found</h1>
+        <p class="error-copy">
+            The page you are looking for does not exist or has been moved.
+        </p>
+
+        <a href="{{ url_for('main.home') }}" class="btn-primary">
+            Back to Home
+        </a>
+
+    </div>
+
+</section>
+
+{% endblock %}

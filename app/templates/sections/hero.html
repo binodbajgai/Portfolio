@@ -9,7 +9,7 @@
         <div class="hero-content" data-aos="fade-right">
 
             <span class="hero-greeting">
-                👋 Hello, I'm
+                &#128075; Hello, I'm
             </span>
 
             <h1>
@@ -32,9 +32,10 @@
                     <i class="fa-solid fa-arrow-right"></i>
                 </a>
 
-                <a href="{{ portfolio.personal.cv }}"
+                <a href="{{ url_for('static', filename='files/Binod_Bajgai_CV.pdf') }}"
                    class="btn-secondary"
-                   target="_blank">
+                   target="_blank"
+                   rel="noopener noreferrer">
 
                     <i class="fa-solid fa-download"></i>
 
@@ -47,20 +48,25 @@
             <div class="hero-social">
 
                 <a href="{{ portfolio.personal.github }}"
-                   target="_blank">
+                   target="_blank"
+                   rel="noopener noreferrer"
+                   aria-label="GitHub profile">
 
                     <i class="fa-brands fa-github"></i>
 
                 </a>
 
                 <a href="{{ portfolio.personal.linkedin }}"
-                   target="_blank">
+                   target="_blank"
+                   rel="noopener noreferrer"
+                   aria-label="LinkedIn profile">
 
                     <i class="fa-brands fa-linkedin"></i>
 
                 </a>
 
-                <a href="mailto:{{ portfolio.personal.email }}">
+                <a href="mailto:{{ portfolio.personal.email }}"
+                   aria-label="Send email">
 
                     <i class="fa-solid fa-envelope"></i>
 
@@ -101,7 +107,7 @@
                         </div>
                 
                         <div class="orbit-icon ai">
-                            🤖
+                            &#129302;
                         </div>
                 
                         <div class="orbit-icon mysql">
