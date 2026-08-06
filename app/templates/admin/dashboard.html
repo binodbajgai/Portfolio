@@ -69,6 +69,8 @@ Admin Dashboard
                                 action="{{ url_for('admin.delete_message', message_id=message.id) }}"
                                 method="POST">
 
+                                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+
                                 <button
                                     type="submit"
                                     class="btn-danger"

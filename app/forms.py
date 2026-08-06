@@ -1,6 +1,8 @@
+from PIL import Image, UnidentifiedImageError
+
 from flask_wtf import FlaskForm
 from wtforms import StringField, TextAreaField, SubmitField, PasswordField
-from wtforms.validators import DataRequired, Email, Length
+from wtforms.validators import DataRequired, Email, Length, ValidationError
 from flask_wtf.file import FileField, FileAllowed
 
 class ContactForm(FlaskForm):
@@ -96,6 +98,28 @@ class ProjectForm(FlaskForm):
         )
     ]
 )
+
+    def validate_image(self, field):
+
+        if not field.data or not getattr(field.data, "filename", ""):
+            return
+
+        stream = field.data.stream
+        position = stream.tell()
+
+        try:
+            stream.seek(0)
+            with Image.open(stream) as image:
+                image.verify()
+
+                if (image.format or "").upper() not in {"JPEG", "PNG", "WEBP"}:
+                    raise ValidationError("Upload a valid JPEG, PNG, or WEBP image.")
+
+        except (UnidentifiedImageError, OSError):
+            raise ValidationError("Upload a valid image file.")
+
+        finally:
+            stream.seek(position)
 
     github = StringField(
         "GitHub URL",

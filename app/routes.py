@@ -1,4 +1,5 @@
-from flask import Blueprint, render_template, flash, redirect, url_for
+from flask import Blueprint, abort, current_app, render_template, flash, redirect, url_for
+from sqlalchemy.exc import SQLAlchemyError
 
 from .database import db
 from .models.message import Message
@@ -23,8 +24,16 @@ def home():
             message=form.message.data
         )
 
-        db.session.add(new_message)
-        db.session.commit()
+        try:
+
+            db.session.add(new_message)
+            db.session.commit()
+
+        except SQLAlchemyError:
+
+            db.session.rollback()
+            current_app.logger.exception("Failed to save contact message")
+            abort(500)
 
         flash(
             "Your message has been sent successfully!",

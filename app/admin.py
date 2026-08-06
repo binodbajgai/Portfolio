@@ -1,24 +1,67 @@
-from .models.message import Message
-from .models.project import Project
-from .forms import ProjectForm
-from .database import db
+import os
+from pathlib import Path
+from uuid import uuid4
+
 from flask import (
     Blueprint,
-    render_template,
-    redirect,
-    url_for,
+    abort,
+    current_app,
     flash,
+    redirect,
+    render_template,
     session,
-    current_app
+    url_for
 )
+from PIL import Image
+from werkzeug.security import check_password_hash
+from werkzeug.utils import secure_filename
+from sqlalchemy.exc import SQLAlchemyError
 
-from .forms import AdminLoginForm
+from .database import db
+from .forms import AdminLoginForm, ProjectForm
+from .models.message import Message
+from .models.project import Project
 
 admin = Blueprint(
     "admin",
     __name__,
     url_prefix="/admin"
 )
+
+
+def _save_project_image(image_file):
+
+    if not image_file or not getattr(image_file, "filename", ""):
+        return None
+
+    filename = secure_filename(image_file.filename)
+    stem = Path(filename).stem
+
+    image_file.stream.seek(0)
+
+    with Image.open(image_file.stream) as image:
+
+        image_format = (image.format or "").upper()
+
+        if image_format not in {"JPEG", "PNG", "WEBP"}:
+            raise ValueError("Unsupported image format")
+
+        unique_name = f"{stem}_{uuid4().hex[:8]}.{image_format.lower().replace('jpeg', 'jpg')}"
+        upload_dir = Path(current_app.static_folder) / "images" / "projects"
+        os.makedirs(upload_dir, exist_ok=True)
+        save_path = upload_dir / unique_name
+
+        if image_format == "JPEG":
+            image = image.convert("RGB")
+            image.save(save_path, format="JPEG", quality=90, optimize=True)
+        elif image_format == "PNG":
+            image.save(save_path, format="PNG", optimize=True)
+        else:
+            image.save(save_path, format="WEBP", quality=90, method=6)
+
+    image_file.stream.seek(0)
+
+    return f"images/projects/{unique_name}"
 
 
 @admin.route("/login", methods=["GET", "POST"])
@@ -28,15 +71,26 @@ def login():
 
     if form.validate_on_submit():
 
+        session.clear()
+
         if (
             form.username.data == current_app.config["ADMIN_USERNAME"]
             and
-            form.password.data == current_app.config["ADMIN_PASSWORD"]
+            check_password_hash(
+                current_app.config["ADMIN_PASSWORD_HASH"],
+                form.password.data
+            )
         ):
 
             session["admin_logged_in"] = True
+            session.permanent = True
 
             return redirect(url_for("admin.dashboard"))
+
+        current_app.logger.warning(
+            "Invalid admin login attempt for %s",
+            form.username.data
+        )
 
         flash("Invalid username or password", "danger")
 
@@ -82,8 +136,16 @@ def delete_message(message_id):
 
     message = Message.query.get_or_404(message_id)
 
-    db.session.delete(message)
-    db.session.commit()
+    try:
+
+        db.session.delete(message)
+        db.session.commit()
+
+    except SQLAlchemyError:
+
+        db.session.rollback()
+        current_app.logger.exception("Failed to delete message")
+        abort(500)
 
     return redirect(url_for("admin.dashboard"))
 
@@ -111,22 +173,28 @@ def add_project():
 
     if form.validate_on_submit():
 
-        project = Project(
+        image_path = _save_project_image(form.image.data)
 
+        project = Project(
             title=form.title.data,
             subtitle=form.subtitle.data,
             description=form.description.data,
-            image=form.image.data,
+            image=image_path,
             github=form.github.data,
             demo=form.demo.data,
             tech=form.tech.data
-
         )
 
-        db.session.add(project)
-        db.session.commit()
+        try:
 
+            db.session.add(project)
+            db.session.commit()
 
+        except SQLAlchemyError:
+
+            db.session.rollback()
+            current_app.logger.exception("Failed to add project")
+            abort(500)
 
         return redirect(url_for("admin.projects"))
 
@@ -148,9 +216,25 @@ def edit_project(project_id):
 
     if form.validate_on_submit():
 
-        form.populate_obj(project)
+        project.title = form.title.data
+        project.subtitle = form.subtitle.data
+        project.description = form.description.data
+        project.github = form.github.data
+        project.demo = form.demo.data
+        project.tech = form.tech.data
 
-        db.session.commit()
+        if form.image.data and getattr(form.image.data, "filename", ""):
+            project.image = _save_project_image(form.image.data)
+
+        try:
+
+            db.session.commit()
+
+        except SQLAlchemyError:
+
+            db.session.rollback()
+            current_app.logger.exception("Failed to update project")
+            abort(500)
 
         flash(
             "Project updated successfully!",
@@ -173,8 +257,16 @@ def delete_project(project_id):
 
     project = Project.query.get_or_404(project_id)
 
-    db.session.delete(project)
-    db.session.commit()
+    try:
+
+        db.session.delete(project)
+        db.session.commit()
+
+    except SQLAlchemyError:
+
+        db.session.rollback()
+        current_app.logger.exception("Failed to delete project")
+        abort(500)
 
     flash(
         "Project deleted successfully!",
