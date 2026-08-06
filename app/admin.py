@@ -190,10 +190,11 @@ def add_project():
             db.session.add(project)
             db.session.commit()
 
-        except Exception as e:
+        except SQLAlchemyError:
+
             db.session.rollback()
-            current_app.logger.exception(e)
-            raise
+            current_app.logger.exception("Failed to add project")
+            abort(500)
 
         return redirect(url_for("admin.projects"))
 

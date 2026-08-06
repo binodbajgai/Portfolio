@@ -29,11 +29,11 @@ def home():
             db.session.add(new_message)
             db.session.commit()
 
-        except SQLAlchemyError:
+        except Exception as e:
 
             db.session.rollback()
-            current_app.logger.exception("Failed to save contact message")
-            abort(500)
+            current_app.logger.exception(e)
+            raise
 
         flash(
             "Your message has been sent successfully!",
