@@ -18,7 +18,7 @@ from werkzeug.utils import secure_filename
 from sqlalchemy.exc import SQLAlchemyError
 
 from .database import db
-from .forms import AdminLoginForm, ProjectForm
+from .forms import AdminLoginForm, ProjectForm, CVUploadForm
 from .models.message import Message
 from .models.project import Project
 
@@ -62,6 +62,30 @@ def _save_project_image(image_file):
     image_file.stream.seek(0)
 
     return f"images/projects/{unique_name}"
+
+
+def _save_cv_file(cv_file):
+
+    if not cv_file or not getattr(cv_file, "filename", ""):
+        return None
+
+    filename = secure_filename(cv_file.filename)
+
+    if not filename.lower().endswith(".pdf"):
+        raise ValueError("Unsupported file format")
+
+    upload_dir = Path(current_app.static_folder) / "files"
+    os.makedirs(upload_dir, exist_ok=True)
+    save_path = upload_dir / "Binod_Bajgai_CV.pdf"
+
+    cv_file.stream.seek(0)
+
+    with open(save_path, "wb") as dest:
+        dest.write(cv_file.stream.read())
+
+    cv_file.stream.seek(0)
+
+    return "files/Binod_Bajgai_CV.pdf"
 
 
 @admin.route("/login", methods=["GET", "POST"])
@@ -150,6 +174,36 @@ def delete_message(message_id):
     return redirect(url_for("admin.dashboard"))
 
 
+@admin.route("/cv", methods=["GET", "POST"])
+def cv():
+
+    if not session.get("admin_logged_in"):
+        return redirect(url_for("admin.login"))
+
+    form = CVUploadForm()
+    current_cv = url_for("static", filename="files/Binod_Bajgai_CV.pdf")
+    cv_file_path = Path(current_app.static_folder) / "files" / "Binod_Bajgai_CV.pdf"
+    cv_exists = cv_file_path.exists()
+
+    if form.validate_on_submit():
+
+        try:
+            _save_cv_file(form.cv.data)
+        except Exception:
+            current_app.logger.exception("Failed to save CV file")
+            flash("Upload failed. Please upload a valid PDF.", "danger")
+        else:
+            flash("CV uploaded successfully!", "success")
+            return redirect(url_for("admin.cv"))
+
+    return render_template(
+        "admin/cv.html",
+        form=form,
+        current_cv=current_cv,
+        cv_exists=cv_exists
+    )
+
+
 @admin.route("/projects")
 def projects():
 
@@ -162,6 +216,7 @@ def projects():
         "admin/projects.html",
         projects=projects
     )
+
 
 @admin.route("/projects/add", methods=["GET", "POST"])
 def add_project():

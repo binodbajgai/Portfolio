@@ -1,0 +1,112 @@
+{% extends "base.html" %}
+
+{% block title %}
+Manage CV
+{% endblock %}
+
+{% block content %}
+
+<section class="admin-dashboard">
+
+    <div class="admin-hero">
+
+        <div class="hero-copy">
+
+            <p class="eyebrow">Admin Console</p>
+            <h1>Manage CV</h1>
+            <p class="hero-subtitle">
+                Upload a new PDF version of your CV to replace the downloadable file instantly.
+            </p>
+
+        </div>
+
+        <div class="dashboard-actions">
+
+            <a href="{{ url_for('admin.dashboard') }}"
+               class="btn-secondary">
+
+                Back to Inbox
+
+            </a>
+
+        </div>
+
+    </div>
+
+    {% with flash_messages = get_flashed_messages(with_categories=true) %}
+
+        {% if flash_messages %}
+
+            <div class="flash-stack">
+
+                {% for category, message in flash_messages %}
+
+                    <div class="flash-message flash-{{ category }}">
+
+                        {{ message }}
+
+                    </div>
+
+                {% endfor %}
+
+            </div>
+
+        {% endif %}
+
+    {% endwith %}
+
+    <div class="messages-panel">
+
+        <div class="section-header">
+
+            <div>
+
+                <p class="eyebrow">CV</p>
+                <h2>Current PDF</h2>
+
+            </div>
+
+            <span class="section-meta">
+                {% if cv_exists %}
+                    Available
+                {% else %}
+                    Not uploaded
+                {% endif %}
+            </span>
+
+        </div>
+
+        {% if cv_exists %}
+            <div class="cv-preview">
+                <p>Current CV file:</p>
+                <a href="{{ current_cv }}" target="_blank" rel="noopener noreferrer" class="btn-primary">
+                    View CV
+                </a>
+            </div>
+        {% else %}
+            <div class="cv-preview">
+                <p>No CV uploaded yet. Upload a PDF to enable the download button on the homepage.</p>
+            </div>
+        {% endif %}
+
+        <form method="POST" enctype="multipart/form-data" class="admin-form">
+
+            {{ form.hidden_tag() }}
+
+            <div class="input-group">
+                {{ form.cv.label }}
+                {{ form.cv(class="form-control") }}
+                {% for error in form.cv.errors %}
+                    <small class="form-error">{{ error }}</small>
+                {% endfor %}
+            </div>
+
+            {{ form.submit(class="btn-primary") }}
+
+        </form>
+
+    </div>
+
+</section>
+
+{% endblock %}

@@ -60,6 +60,31 @@ class AdminLoginForm(FlaskForm):
     submit = SubmitField("Login")
 
 
+class CVUploadForm(FlaskForm):
+
+    cv = FileField(
+        "Upload CV",
+        validators=[
+            DataRequired(message="Please choose a PDF to upload."),
+            FileAllowed(
+                ["pdf"],
+                "PDF files only!"
+            )
+        ]
+    )
+
+    def validate_cv(self, field):
+
+        if not field.data or not getattr(field.data, "filename", ""):
+            return
+
+        filename = field.data.filename.lower()
+
+        if not filename.endswith(".pdf"):
+            raise ValidationError("Upload a valid PDF file.")
+
+    submit = SubmitField("Upload CV")
+
 
 # ==========================================
 # Project Form
