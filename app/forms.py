@@ -42,7 +42,7 @@ class ContactForm(FlaskForm):
     submit = SubmitField("Send Message")
 
     # ==========================================
-# Admin Login Form
+# Admin Login Forms 
 # ==========================================
 
 class AdminLoginForm(FlaskForm):
