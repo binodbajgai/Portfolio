@@ -5,6 +5,7 @@ from urllib.parse import quote
 from urllib.request import Request, urlopen
 
 from flask import current_app
+from vercel.blob import BlobClient, BlobError
 
 
 CV_FILENAME = "Binod_Bajgai_CV.pdf"
@@ -65,30 +66,18 @@ def save_cv(cv_file):
 
     if blob_url and token:
         cv_file.stream.seek(0)
-        request = Request(
-            blob_url,
-            data=cv_file.stream.read(),
-            method="PUT",
-            headers={
-                "Authorization": f"Bearer {token}",
-                "Content-Type": "application/pdf",
-                "x-content-type": "application/pdf",
-                "x-add-random-suffix": "false",
-            },
-        )
 
         try:
-            with urlopen(request, timeout=30) as response:
-                if not 200 <= response.status < 300:
-                    raise StorageError(
-                        f"Vercel Blob rejected the upload ({response.status})."
-                    )
-        except HTTPError as error:
-            raise StorageError(
-                f"Vercel Blob rejected the upload ({error.code})."
-            ) from error
-        except URLError as error:
-            raise StorageError("Could not reach Vercel Blob.") from error
+            BlobClient(token=token).put(
+                CV_FILENAME,
+                cv_file.stream.read(),
+                access="public",
+                content_type="application/pdf",
+                add_random_suffix=False,
+                overwrite=True,
+            )
+        except BlobError as error:
+            raise StorageError("Vercel Blob rejected the upload.") from error
         finally:
             cv_file.stream.seek(0)
 
