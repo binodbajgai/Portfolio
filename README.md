@@ -2,7 +2,7 @@
 
 A personal portfolio website built with Flask, featuring a public-facing site with project showcase and contact form, plus a password-protected admin dashboard for managing content.
 
-**Live site:** https://binodbajgai.onrender.com/
+**Live site:** https://binodbajgai.com.np/
 
 ---
 
