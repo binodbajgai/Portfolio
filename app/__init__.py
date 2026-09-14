@@ -50,7 +50,7 @@ def create_app():
             "default-src 'self'; "
             "base-uri 'self'; "
             "frame-ancestors 'none'; "
-            "img-src 'self' data:; "
+            "img-src 'self' data: https://*.public.blob.vercel-storage.com; "
             "script-src 'self' https://cdnjs.cloudflare.com https://unpkg.com 'unsafe-inline'; "
             "style-src 'self' https://fonts.googleapis.com https://cdnjs.cloudflare.com https://unpkg.com 'unsafe-inline'; "
             "font-src 'self' https://fonts.gstatic.com https://cdnjs.cloudflare.com; "
