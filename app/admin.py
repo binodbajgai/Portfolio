@@ -1,4 +1,5 @@
 import os
+from io import BytesIO
 from pathlib import Path
 from uuid import uuid4
 
@@ -21,7 +22,7 @@ from .database import db
 from .forms import AdminLoginForm, ProjectForm, CVUploadForm
 from .models.message import Message
 from .models.project import Project
-from .storage import StorageError, cv_exists, cv_url, save_cv
+from .storage import StorageError, cv_exists, cv_url, save_blob, save_cv
 
 admin = Blueprint(
     "admin",
@@ -48,21 +49,34 @@ def _save_project_image(image_file):
             raise ValueError("Unsupported image format")
 
         unique_name = f"{stem}_{uuid4().hex[:8]}.{image_format.lower().replace('jpeg', 'jpg')}"
-        upload_dir = Path(current_app.static_folder) / "images" / "projects"
-        os.makedirs(upload_dir, exist_ok=True)
-        save_path = upload_dir / unique_name
+        output = BytesIO()
 
         if image_format == "JPEG":
             image = image.convert("RGB")
-            image.save(save_path, format="JPEG", quality=90, optimize=True)
+            image.save(output, format="JPEG", quality=90, optimize=True)
         elif image_format == "PNG":
-            image.save(save_path, format="PNG", optimize=True)
+            image.save(output, format="PNG", optimize=True)
         else:
-            image.save(save_path, format="WEBP", quality=90, method=6)
+            image.save(output, format="WEBP", quality=90, method=6)
 
     image_file.stream.seek(0)
 
-    return f"images/projects/{unique_name}"
+    blob_path = f"images/projects/{unique_name}"
+    blob_url = save_blob(
+        blob_path,
+        output.getvalue(),
+        f"image/{image_format.lower().replace('jpeg', 'jpg')}"
+    )
+
+    if blob_url:
+        return blob_url
+
+    upload_dir = Path(current_app.static_folder) / "images" / "projects"
+    os.makedirs(upload_dir, exist_ok=True)
+    output_path = upload_dir / unique_name
+    output_path.write_bytes(output.getvalue())
+
+    return blob_path
 
 
 @admin.route("/login", methods=["GET", "POST"])
@@ -209,7 +223,16 @@ def add_project():
 
     if form.validate_on_submit():
 
-        image_path = _save_project_image(form.image.data)
+        try:
+            image_path = _save_project_image(form.image.data)
+        except (StorageError, OSError, ValueError):
+            current_app.logger.exception("Failed to save project image")
+            flash("Project image upload failed. Please try again.", "danger")
+            return render_template(
+                "admin/project_form.html",
+                form=form,
+                title="Add Project"
+            )
 
         project = Project(
             title=form.title.data,
@@ -265,7 +288,16 @@ def edit_project(project_id):
         project.tech = form.tech.data
 
         if form.image.data and getattr(form.image.data, "filename", ""):
-            project.image = _save_project_image(form.image.data)
+            try:
+                project.image = _save_project_image(form.image.data)
+            except (StorageError, OSError, ValueError):
+                current_app.logger.exception("Failed to save project image")
+                flash("Project image upload failed. Please try again.", "danger")
+                return render_template(
+                    "admin/project_form.html",
+                    form=form,
+                    title="Edit Project"
+                )
 
         try:
 

@@ -34,7 +34,7 @@
 
                 <div class="project-image">
 
-                    <img src="{{ url_for('static', filename=project.image or 'images/binod_cv.png') }}"
+                    <img src="{{ project.image if project.image and project.image.startswith('http') else url_for('static', filename=project.image or 'images/binod_cv.png') }}"
                          alt="{{ project.title or 'Project image' }}"
                          loading="lazy">
 

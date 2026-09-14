@@ -15,6 +15,37 @@ class StorageError(RuntimeError):
     """Raised when a CV cannot be read from or written to storage."""
 
 
+def _blob_configured():
+    return bool(os.getenv("BLOB_PUBLIC_URL") and os.getenv("BLOB_READ_WRITE_TOKEN"))
+
+
+def save_blob(path, body, content_type):
+    token = os.getenv("BLOB_READ_WRITE_TOKEN")
+
+    if _blob_configured():
+        try:
+            result = BlobClient(token=token).put(
+                path,
+                body,
+                access="public",
+                content_type=content_type,
+                add_random_suffix=False,
+                overwrite=True,
+            )
+        except BlobError as error:
+            raise StorageError("Vercel Blob rejected the upload.") from error
+
+        return result.url
+
+    if os.getenv("VERCEL"):
+        raise StorageError(
+            "Vercel Blob storage is not configured. Set "
+            "BLOB_PUBLIC_URL and BLOB_READ_WRITE_TOKEN."
+        )
+
+    return None
+
+
 def _blob_cv_url():
     base_url = os.getenv("BLOB_PUBLIC_URL", "").rstrip("/")
 
@@ -68,16 +99,11 @@ def save_cv(cv_file):
         cv_file.stream.seek(0)
 
         try:
-            BlobClient(token=token).put(
+            save_blob(
                 CV_FILENAME,
                 cv_file.stream.read(),
-                access="public",
-                content_type="application/pdf",
-                add_random_suffix=False,
-                overwrite=True,
+                "application/pdf"
             )
-        except BlobError as error:
-            raise StorageError("Vercel Blob rejected the upload.") from error
         finally:
             cv_file.stream.seek(0)
 
