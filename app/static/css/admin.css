@@ -86,12 +86,36 @@
     font-weight:600;
 
     transition:.3s;
+    -webkit-tap-highlight-color:transparent;
+    touch-action:manipulation;
+    -webkit-font-smoothing:antialiased;
 
 }
 
-.btn-secondary:hover{
+@media (hover:hover){
 
-    background:rgba(255,255,255,.11);
+    .btn-secondary:hover{
+
+        background:rgba(255,255,255,.11);
+
+    }
+
+}
+
+.btn-secondary:active,
+.btn-secondary:focus:not(:focus-visible){
+
+    background:rgba(255,255,255,.06);
+    outline:none;
+    filter:none;
+    transform:none;
+
+}
+
+.btn-secondary:focus-visible{
+
+    outline:2px solid #00F5FF;
+    outline-offset:3px;
 
 }
 
@@ -419,12 +443,37 @@
     border:none;
 
     transition:.3s;
+    -webkit-tap-highlight-color:transparent;
+    touch-action:manipulation;
+    -webkit-font-smoothing:antialiased;
 
 }
 
-.btn-primary:hover{
+@media (hover:hover){
 
-    background:#00d7df;
+    .btn-primary:hover{
+
+        background:#00d7df;
+
+    }
+
+}
+
+.btn-primary:active,
+.btn-primary:focus:not(:focus-visible){
+
+    background:#00F5FF;
+    color:#07101F;
+    outline:none;
+    filter:none;
+    transform:none;
+
+}
+
+.btn-primary:focus-visible{
+
+    outline:2px solid #ffffff;
+    outline-offset:3px;
 
 }
 

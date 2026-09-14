@@ -3,7 +3,7 @@ from PIL import Image, UnidentifiedImageError
 from flask_wtf import FlaskForm
 from wtforms import StringField, TextAreaField, SubmitField, PasswordField
 from wtforms.validators import DataRequired, Email, Length, ValidationError
-from flask_wtf.file import FileField, FileAllowed
+from flask_wtf.file import FileField, FileAllowed, FileRequired
 
 class ContactForm(FlaskForm):
 
@@ -65,7 +65,7 @@ class CVUploadForm(FlaskForm):
     cv = FileField(
         "Upload CV",
         validators=[
-            DataRequired(message="Please choose a PDF to upload."),
+            FileRequired(message="Please choose a PDF to upload."),
             FileAllowed(
                 ["pdf"],
                 "PDF files only!"
@@ -82,6 +82,16 @@ class CVUploadForm(FlaskForm):
 
         if not filename.endswith(".pdf"):
             raise ValidationError("Upload a valid PDF file.")
+
+        stream = field.data.stream
+        position = stream.tell()
+
+        try:
+            stream.seek(0)
+            if stream.read(5) != b"%PDF-":
+                raise ValidationError("Upload a valid PDF file.")
+        finally:
+            stream.seek(position)
 
     submit = SubmitField("Upload CV")
 

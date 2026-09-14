@@ -95,7 +95,7 @@ Manage CV
 
             <div class="input-group">
                 {{ form.cv.label }}
-                {{ form.cv(class="form-control") }}
+                {{ form.cv(class="form-control", accept=".pdf,application/pdf") }}
                 {% for error in form.cv.errors %}
                     <small class="form-error">{{ error }}</small>
                 {% endfor %}

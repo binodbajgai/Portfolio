@@ -189,7 +189,7 @@ def cv():
 
         try:
             _save_cv_file(form.cv.data)
-        except Exception:
+        except ValueError:
             current_app.logger.exception("Failed to save CV file")
             flash("Upload failed. Please upload a valid PDF.", "danger")
         else:
