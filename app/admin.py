@@ -21,6 +21,7 @@ from .database import db
 from .forms import AdminLoginForm, ProjectForm, CVUploadForm
 from .models.message import Message
 from .models.project import Project
+from .storage import StorageError, cv_exists, cv_url, save_cv
 
 admin = Blueprint(
     "admin",
@@ -62,30 +63,6 @@ def _save_project_image(image_file):
     image_file.stream.seek(0)
 
     return f"images/projects/{unique_name}"
-
-
-def _save_cv_file(cv_file):
-
-    if not cv_file or not getattr(cv_file, "filename", ""):
-        return None
-
-    filename = secure_filename(cv_file.filename)
-
-    if not filename.lower().endswith(".pdf"):
-        raise ValueError("Unsupported file format")
-
-    upload_dir = Path(current_app.static_folder) / "files"
-    os.makedirs(upload_dir, exist_ok=True)
-    save_path = upload_dir / "Binod_Bajgai_CV.pdf"
-
-    cv_file.stream.seek(0)
-
-    with open(save_path, "wb") as dest:
-        dest.write(cv_file.stream.read())
-
-    cv_file.stream.seek(0)
-
-    return "files/Binod_Bajgai_CV.pdf"
 
 
 @admin.route("/login", methods=["GET", "POST"])
@@ -181,26 +158,30 @@ def cv():
         return redirect(url_for("admin.login"))
 
     form = CVUploadForm()
-    current_cv = url_for("static", filename="files/Binod_Bajgai_CV.pdf")
-    cv_file_path = Path(current_app.static_folder) / "files" / "Binod_Bajgai_CV.pdf"
-    cv_exists = cv_file_path.exists()
+    current_cv = cv_url()
 
     if form.validate_on_submit():
 
         try:
-            _save_cv_file(form.cv.data)
-        except ValueError:
+            save_cv(form.cv.data)
+        except (StorageError, OSError):
             current_app.logger.exception("Failed to save CV file")
-            flash("Upload failed. Please upload a valid PDF.", "danger")
+            flash("Upload failed. Please try again.", "danger")
         else:
             flash("CV uploaded successfully!", "success")
             return redirect(url_for("admin.cv"))
+
+    try:
+        has_cv = cv_exists()
+    except StorageError:
+        current_app.logger.exception("Failed to check CV file")
+        has_cv = False
 
     return render_template(
         "admin/cv.html",
         form=form,
         current_cv=current_cv,
-        cv_exists=cv_exists
+        cv_exists=has_cv
     )
 
 

@@ -14,6 +14,7 @@ A personal portfolio website built with Flask, featuring a public-facing site wi
   - Adding, editing, and deleting projects
   - Viewing and deleting contact messages
   - Image uploads for project thumbnails
+  - CV uploads stored in Vercel Blob in production
 - CSRF protection on all state-changing forms
 - Secure session cookies (`HttpOnly`, `Secure`, `SameSite=Lax`)
 - Security headers on every response (CSP, HSTS, X-Frame-Options, X-Content-Type-Options, Referrer-Policy)
@@ -48,8 +49,16 @@ The app will not start unless all of these are set. There are no default fallbac
 | `ADMIN_USERNAME` | Admin login username |
 | `ADMIN_PASSWORD_HASH` | Hashed admin password. Generate with `python -c "from werkzeug.security import generate_password_hash; print(generate_password_hash('your-password'))"` |
 | `SESSION_COOKIE_SECURE` | Optional, defaults to `1` (enabled). Set to `0` only for local HTTP development. |
+| `BLOB_PUBLIC_URL` | Public base URL of the Vercel Blob store, used for the CV file URL. |
+| `BLOB_READ_WRITE_TOKEN` | Vercel Blob read-write token used by the server to replace the CV. |
 
 None of these values should ever be committed to the repository. Locally, keep them in a `.env` file that is listed in `.gitignore`. In production, set them directly in the Render dashboard under the service's **Environment** tab.
+
+For Vercel deployment, create a Blob store in the project and add
+`BLOB_PUBLIC_URL` and `BLOB_READ_WRITE_TOKEN` to the project's Environment
+Variables. The CV is uploaded to the fixed `Binod_Bajgai_CV.pdf` path, so each
+new upload replaces the previous file. Without these variables, local
+development continues to use `app/static/files/`.
 
 ---
 

@@ -6,6 +6,7 @@ from .models.message import Message
 from .portfolio_data import portfolio
 from .forms import ContactForm
 from .models.project import Project
+from .storage import cv_url
 
 main = Blueprint("main", __name__)
 
@@ -48,5 +49,6 @@ def home():
         "index.html",
         portfolio=portfolio,
         form=form,
-        projects=projects
+        projects=projects,
+        cv_url=cv_url()
     )
