@@ -1,4 +1,4 @@
-from flask import Flask, render_template
+from flask import Flask, render_template, request
 from flask_wtf.csrf import CSRFProtect
 
 from .admin import admin
@@ -29,6 +29,14 @@ def create_app():
 
     @app.after_request
     def apply_security_headers(response):
+
+        # A form's CSRF token is tied to the user's session. Never cache
+        # dynamic responses, otherwise a stale login form can lose that
+        # matching session cookie when submitted.
+        if not request.path.startswith("/static/"):
+            response.cache_control.no_store = True
+            response.cache_control.private = True
+            response.headers["Pragma"] = "no-cache"
 
         response.headers["Strict-Transport-Security"] = (
             "max-age=31536000; includeSubDomains"
