@@ -43,7 +43,19 @@ def home():
 
         return redirect(url_for("main.home"))
 
-    projects = Project.query.order_by(Project.id.desc()).all()
+    db_projects = Project.query.order_by(Project.id.desc()).all()
+
+    # Fall back to static portfolio data when the DB has no projects yet
+    if db_projects:
+        projects = db_projects
+    else:
+        projects = []
+        for p in portfolio.get("projects", []):
+            # Normalize tech: list → comma-separated string (template calls .split(","))
+            p = dict(p)
+            if isinstance(p.get("tech"), list):
+                p["tech"] = ", ".join(p["tech"])
+            projects.append(type("Project", (), p)())
 
     return render_template(
         "index.html",
