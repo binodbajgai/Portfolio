@@ -584,6 +584,9 @@
 
     border-radius:50%;
 
+    /* The profile image has z-index: 2; keep all orbit badges visible above it. */
+    z-index:3;
+
     animation:orbitRotate 28s linear infinite;
 
 }
