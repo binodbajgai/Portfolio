@@ -394,7 +394,23 @@
     }
 
     .hero-stats{
-        grid-template-columns:1fr;
+        grid-template-columns:repeat(3, minmax(0, 1fr));
+        gap:12px;
+        margin-top:42px;
+    }
+
+    .stat-card{
+        padding:18px 10px;
+        border-radius:18px;
+    }
+
+    .stat-card h3{
+        font-size:clamp(16px, 4vw, 28px);
+        margin-bottom:6px;
+    }
+
+    .stat-card p{
+        font-size:13px;
     }
 
 }
