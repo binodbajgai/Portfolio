@@ -571,16 +571,16 @@
 
     position:absolute;
 
-    /* The orbit must sit within the outer dashed ring, not extend below it. */
-    width:440px;
+    /* Keep each 64px badge safely inside both decorative rings. */
+    width:370px;
 
-    height:440px;
+    height:370px;
 
     top:50%;
 
     left:50%;
 
-    margin:-220px 0 0 -220px;
+    margin:-185px 0 0 -185px;
 
     border-radius:50%;
 
