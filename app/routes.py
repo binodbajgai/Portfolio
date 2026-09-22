@@ -6,6 +6,7 @@ from .models.message import Message
 from .portfolio_data import portfolio
 from .forms import ContactForm
 from .models.project import Project
+from .models.content import Profile, SiteSettings, Skill, TimelineEntry
 from .storage import cv_url
 
 main = Blueprint("main", __name__)
@@ -57,10 +58,16 @@ def home():
                 p["tech"] = ", ".join(p["tech"])
             projects.append(type("Project", (), p)())
 
+    active_portfolio = dict(portfolio)
+    active_portfolio["personal"] = Profile.query.first() or portfolio["personal"]
+    active_portfolio["skills"] = Skill.query.order_by(Skill.position, Skill.id).all() or portfolio["skills"]
+    active_portfolio["experience"] = TimelineEntry.query.order_by(TimelineEntry.position, TimelineEntry.id).all() or portfolio["experience"]
+
     return render_template(
         "index.html",
-        portfolio=portfolio,
+        portfolio=active_portfolio,
         form=form,
         projects=projects,
-        cv_url=cv_url()
+        cv_url=cv_url(),
+        site_settings=SiteSettings.query.first(),
     )

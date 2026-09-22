@@ -1,0 +1,7 @@
+{% extends "base.html" %}
+{% block title %}Edit Profile{% endblock %}
+{% block content %}
+<section class="admin-dashboard"><div class="admin-hero"><div class="hero-copy"><p class="eyebrow">Content editor</p><h1>Home, About & Contact</h1><p class="hero-subtitle">These details appear across your public portfolio.</p></div><div class="dashboard-actions"><a href="{{ url_for('admin.dashboard') }}" class="btn-secondary">Back to dashboard</a></div></div>
+<div class="messages-panel"><form method="POST" enctype="multipart/form-data" class="admin-form">{{ form.hidden_tag() }}
+{% for field in [form.name, form.title, form.description, form.roles, form.location, form.email, form.phone, form.github, form.linkedin, form.photo] %}<div class="input-group">{{ field.label }}{{ field(class="form-control") }}{% for error in field.errors %}<small class="form-error">{{ error }}</small>{% endfor %}</div>{% endfor %}{{ form.submit(class="btn-primary") }}</form></div></section>
+{% endblock %}

@@ -49,12 +49,16 @@ The app will not start unless all of these are set. There are no default fallbac
 | `ADMIN_USERNAME` | Admin login username |
 | `ADMIN_PASSWORD_HASH` | Hashed admin password. Generate with `python -c "from werkzeug.security import generate_password_hash; print(generate_password_hash('your-password'))"` |
 | `SESSION_COOKIE_SECURE` | Optional, defaults to `1` (enabled). Set to `0` only for local HTTP development. |
+| `SESSION_LIFETIME_DAYS` | Optional, defaults to `30`; lifetime of permanent admin sessions in whole days. |
 | `BLOB_PUBLIC_URL` | Public base URL of the Vercel Blob store, used for the CV file URL. |
 | `BLOB_READ_WRITE_TOKEN` | Vercel Blob read-write token used by the server to replace the CV. |
 
 None of these values should ever be committed to the repository. Locally, keep them in a `.env` file that is listed in `.gitignore`. In production, set them directly in the Render dashboard under the service's **Environment** tab.
 
-For Vercel deployment, create a Blob store in the project and add
+For Vercel deployment, set `SESSION_LIFETIME_DAYS=30` in the project's
+Environment Variables and redeploy after changing it. Existing browser
+cookies created with the previous lifetime must be replaced by logging in
+again. Create a Blob store in the project and add
 `BLOB_PUBLIC_URL` and `BLOB_READ_WRITE_TOKEN` to the project's Environment
 Variables. The CV is uploaded to the fixed `Binod_Bajgai_CV.pdf` path, so each
 new upload replaces the previous file. Without these variables, local

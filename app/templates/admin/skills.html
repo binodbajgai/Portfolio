@@ -1,0 +1,6 @@
+{% extends "base.html" %}
+{% block title %}Skills{% endblock %}
+{% block content %}
+<section class="admin-dashboard"><div class="admin-hero"><div class="hero-copy"><p class="eyebrow">Content editor</p><h1>Skills</h1><p class="hero-subtitle">Add, edit, order, or remove the skills on your portfolio.</p></div><div class="dashboard-actions"><a href="{{ url_for('admin.dashboard') }}" class="btn-secondary">Dashboard</a><a href="{{ url_for('admin.edit_skill') }}" class="btn-primary">+ Add skill</a></div></div>
+<div class="messages-panel"><div class="table-wrapper"><table><thead><tr><th>Name</th><th>Icon</th><th>Description</th><th>Order</th><th>Actions</th></tr></thead><tbody>{% for skill in skills %}<tr><td>{{ skill.name }}</td><td>{{ skill.icon }}</td><td>{{ skill.description }}</td><td>{{ skill.position }}</td><td><div class="action-buttons"><a class="btn-primary" href="{{ url_for('admin.edit_skill', skill_id=skill.id) }}">Edit</a><form action="{{ url_for('admin.delete_skill', skill_id=skill.id) }}" method="POST"><input type="hidden" name="csrf_token" value="{{ csrf_token() }}"><button class="btn-danger" onclick="return confirm('Delete this skill?')">Delete</button></form></div></td></tr>{% else %}<tr><td colspan="5" class="empty-state">No skills yet.</td></tr>{% endfor %}</tbody></table></div></div></section>
+{% endblock %}

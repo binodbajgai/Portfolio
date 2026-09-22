@@ -8,7 +8,7 @@
 
         <div class="about-image">
 
-            <img src="{{ url_for('static', filename='images/binod.jpeg') }}"
+            <img src="{{ portfolio.personal.photo if portfolio.personal.photo and portfolio.personal.photo.startswith('http') else url_for('static', filename=portfolio.personal.photo or 'images/binod.jpeg') }}"
                  alt="{{ portfolio.personal.name }}"
                  loading="lazy">
 
@@ -59,8 +59,7 @@
                     </h4>
 
                     <p>
-                        Runner-up<br>
-                        Hult Prize Softwarica
+                        {{ site_settings.about_achievement|replace(' | ', '<br>')|safe }}
                     </p>
 
                 </div>
@@ -78,8 +77,7 @@
                     </h4>
 
                     <p>
-                        AI & Web<br>
-                        Development
+                        {{ site_settings.about_projects|replace(' | ', '<br>')|safe }}
                     </p>
 
                 </div>

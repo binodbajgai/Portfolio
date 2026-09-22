@@ -8,11 +8,10 @@
 
             <span class="section-tag">MY JOURNEY</span>
 
-            <h2>Experience & Education</h2>
+            <h2>{{ site_settings.experience_heading }}</h2>
 
             <p>
-                My learning journey, achievements, and projects that have
-                shaped my growth as a software developer.
+                {{ site_settings.experience_description }}
             </p>
 
         </div>
@@ -40,7 +39,7 @@
 
                     <h3>{{ item.title }}</h3>
 
-                    <h4>{{ item.company }}</h4>
+                    <h4>{{ item.organization if item.organization is defined else item.company }}</h4>
 
                     <p>
                         {{ item.description }}

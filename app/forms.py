@@ -177,4 +177,54 @@ class ProjectForm(FlaskForm):
     submit = SubmitField("Save Project")
 
 
+class ProfileForm(FlaskForm):
+    name = StringField("Name", validators=[DataRequired(), Length(max=150)])
+    title = StringField("Professional title", validators=[DataRequired(), Length(max=200)])
+    description = TextAreaField("Introduction", validators=[DataRequired()])
+    location = StringField("Location", validators=[Length(max=150)])
+    email = StringField("Email", validators=[Email(), Length(max=255)])
+    phone = StringField("Phone", validators=[Length(max=80)])
+    github = StringField("GitHub URL", validators=[Length(max=255)])
+    linkedin = StringField("LinkedIn URL", validators=[Length(max=255)])
+    roles = StringField("Roles (comma separated)", validators=[Length(max=500)])
+    photo = FileField("Profile photo", validators=[FileAllowed(["jpg", "jpeg", "png", "webp"], "Images only!")])
+    submit = SubmitField("Save profile")
+
+
+class SiteSettingsForm(FlaskForm):
+    hero_greeting = StringField("Hero greeting", validators=[DataRequired(), Length(max=150)])
+    projects_stat = StringField("Projects stat", validators=[DataRequired(), Length(max=50)])
+    technologies_stat = StringField("Technologies stat", validators=[DataRequired(), Length(max=50)])
+    journey_stat = StringField("Journey stat", validators=[DataRequired(), Length(max=50)])
+    projects_heading = StringField("Projects heading", validators=[DataRequired(), Length(max=200)])
+    projects_description = TextAreaField("Projects description", validators=[DataRequired()])
+    about_achievement = StringField("About achievement text", validators=[DataRequired(), Length(max=255)])
+    about_projects = StringField("About projects text", validators=[DataRequired(), Length(max=255)])
+    skills_heading = StringField("Skills heading", validators=[DataRequired(), Length(max=200)])
+    skills_description = TextAreaField("Skills description", validators=[DataRequired()])
+    experience_heading = StringField("Timeline heading", validators=[DataRequired(), Length(max=200)])
+    experience_description = TextAreaField("Timeline description", validators=[DataRequired()])
+    contact_heading = StringField("Contact heading", validators=[DataRequired(), Length(max=200)])
+    contact_description = TextAreaField("Contact description", validators=[DataRequired()])
+    submit = SubmitField("Save site copy")
+
+
+class SkillForm(FlaskForm):
+    name = StringField("Skill name", validators=[DataRequired(), Length(max=100)])
+    icon = StringField("Font Awesome icon class", validators=[DataRequired(), Length(max=150)])
+    description = StringField("Description", validators=[DataRequired(), Length(max=255)])
+    position = StringField("Display order", validators=[Length(max=10)])
+    submit = SubmitField("Save skill")
+
+
+class TimelineEntryForm(FlaskForm):
+    kind = StringField("Type (experience or achievement)", validators=[DataRequired(), Length(max=20)])
+    year = StringField("Year or date range", validators=[DataRequired(), Length(max=100)])
+    title = StringField("Title", validators=[DataRequired(), Length(max=200)])
+    organization = StringField("Company, school, or organizer", validators=[DataRequired(), Length(max=200)])
+    description = TextAreaField("Description", validators=[DataRequired()])
+    position = StringField("Display order", validators=[Length(max=10)])
+    submit = SubmitField("Save entry")
+
+
     

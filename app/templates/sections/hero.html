@@ -9,7 +9,7 @@
         <div class="hero-content" data-aos="fade-right">
 
             <span class="hero-greeting">
-                &#128075; Hello, I'm
+                {{ site_settings.hero_greeting }}
             </span>
 
             <h1>
@@ -17,7 +17,7 @@
             </h1>
 
             <h2 class="typing-text">
-                <span id="typing-role"></span>
+                <span id="typing-role" data-roles="{{ portfolio.personal.roles }}"></span>
                 <span class="typing-cursor">|</span>
             </h2>
 
@@ -86,8 +86,8 @@
                     <div class="hero-glow"></div>
                 
                     <img
-                        src="{{ url_for('static', filename='images/binod.jpeg') }}"
-                        alt="Binod Bajgai">
+                        src="{{ portfolio.personal.photo if portfolio.personal.photo and portfolio.personal.photo.startswith('http') else url_for('static', filename=portfolio.personal.photo or 'images/binod.jpeg') }}"
+                        alt="{{ portfolio.personal.name }}">
                 
                     <div class="orbit orbit-one">
                 
@@ -133,7 +133,7 @@
 
         <div class="stat-card">
 
-            <h3>5+</h3>
+            <h3>{{ site_settings.projects_stat }}</h3>
 
             <p>Projects</p>
 
@@ -141,7 +141,7 @@
 
         <div class="stat-card">
 
-            <h3>8+</h3>
+            <h3>{{ site_settings.technologies_stat }}</h3>
 
             <p>Technologies</p>
 
@@ -149,7 +149,7 @@
 
         <div class="stat-card">
 
-            <h3>2025</h3>
+            <h3>{{ site_settings.journey_stat }}</h3>
 
             <p>Started Journey</p>
 

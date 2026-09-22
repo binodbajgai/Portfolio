@@ -19,7 +19,11 @@ from werkzeug.utils import secure_filename
 from sqlalchemy.exc import SQLAlchemyError
 
 from .database import db
-from .forms import AdminLoginForm, ProjectForm, CVUploadForm
+from .forms import (
+    AdminLoginForm, ProjectForm, CVUploadForm, ProfileForm, SiteSettingsForm, SkillForm,
+    TimelineEntryForm,
+)
+from .models.content import Profile, SiteSettings, Skill, TimelineEntry
 from .models.message import Message
 from .models.project import Project
 from .storage import StorageError, cv_exists, cv_url, save_blob, save_cv
@@ -31,7 +35,14 @@ admin = Blueprint(
 )
 
 
-def _save_project_image(image_file):
+def _display_order(value):
+    try:
+        return int(value or 0)
+    except (TypeError, ValueError):
+        return 0
+
+
+def _save_project_image(image_file, folder="projects"):
 
     if not image_file or not getattr(image_file, "filename", ""):
         return None
@@ -61,7 +72,7 @@ def _save_project_image(image_file):
 
     image_file.stream.seek(0)
 
-    blob_path = f"images/projects/{unique_name}"
+    blob_path = f"images/{folder}/{unique_name}"
     blob_url = save_blob(
         blob_path,
         output.getvalue(),
@@ -71,7 +82,7 @@ def _save_project_image(image_file):
     if blob_url:
         return blob_url
 
-    upload_dir = Path(current_app.static_folder) / "images" / "projects"
+    upload_dir = Path(current_app.static_folder) / "images" / folder
     os.makedirs(upload_dir, exist_ok=True)
     output_path = upload_dir / unique_name
     output_path.write_bytes(output.getvalue())
@@ -231,7 +242,8 @@ def add_project():
             return render_template(
                 "admin/project_form.html",
                 form=form,
-                title="Add Project"
+                title="Add Project",
+                project=None,
             )
 
         project = Project(
@@ -265,7 +277,8 @@ def add_project():
     return render_template(
         "admin/project_form.html",
         form=form,
-        title="Add Project"
+        title="Add Project",
+        project=None,
     )
 
 @admin.route("/projects/edit/<int:project_id>", methods=["GET", "POST"])
@@ -296,7 +309,8 @@ def edit_project(project_id):
                 return render_template(
                     "admin/project_form.html",
                     form=form,
-                    title="Edit Project"
+                    title="Edit Project",
+                    project=project,
                 )
 
         try:
@@ -319,7 +333,8 @@ def edit_project(project_id):
     return render_template(
         "admin/project_form.html",
         form=form,
-        title="Edit Project"
+        title="Edit Project",
+        project=project,
     )
 
 @admin.route("/projects/delete/<int:project_id>", methods=["POST"])
@@ -347,6 +362,155 @@ def delete_project(project_id):
     )
 
     return redirect(url_for("admin.projects"))
+
+
+@admin.route("/profile", methods=["GET", "POST"])
+def profile():
+    if not session.get("admin_logged_in"):
+        return redirect(url_for("admin.login"))
+
+    profile_record = Profile.query.first()
+    if not profile_record:
+        abort(500)
+
+    form = ProfileForm(obj=profile_record)
+    if form.validate_on_submit():
+        for field in ("name", "title", "description", "location", "email", "phone", "github", "linkedin", "roles"):
+            setattr(profile_record, field, getattr(form, field).data)
+        if form.photo.data and getattr(form.photo.data, "filename", ""):
+            try:
+                profile_record.photo = _save_project_image(form.photo.data, "profile")
+            except (StorageError, OSError, ValueError):
+                current_app.logger.exception("Failed to save profile photo")
+                flash("Profile photo upload failed. Please try again.", "danger")
+                return render_template("admin/profile_form.html", form=form)
+        try:
+            db.session.commit()
+        except SQLAlchemyError:
+            db.session.rollback()
+            current_app.logger.exception("Failed to update profile")
+            abort(500)
+        flash("Profile updated successfully!", "success")
+        return redirect(url_for("admin.profile"))
+
+    return render_template("admin/profile_form.html", form=form)
+
+
+@admin.route("/site-copy", methods=["GET", "POST"])
+def site_copy():
+    if not session.get("admin_logged_in"):
+        return redirect(url_for("admin.login"))
+    settings = SiteSettings.query.first()
+    if not settings:
+        abort(500)
+    form = SiteSettingsForm(obj=settings)
+    if form.validate_on_submit():
+        for field in form._fields:
+            if field not in {"csrf_token", "submit"}:
+                setattr(settings, field, getattr(form, field).data)
+        try:
+            db.session.commit()
+        except SQLAlchemyError:
+            db.session.rollback()
+            current_app.logger.exception("Failed to update site copy")
+            abort(500)
+        flash("Site copy updated successfully!", "success")
+        return redirect(url_for("admin.site_copy"))
+    return render_template("admin/site_settings_form.html", form=form)
+
+
+@admin.route("/skills")
+def skills():
+    if not session.get("admin_logged_in"):
+        return redirect(url_for("admin.login"))
+    return render_template("admin/skills.html", skills=Skill.query.order_by(Skill.position, Skill.id).all())
+
+
+@admin.route("/skills/add", methods=["GET", "POST"])
+@admin.route("/skills/edit/<int:skill_id>", methods=["GET", "POST"])
+def edit_skill(skill_id=None):
+    if not session.get("admin_logged_in"):
+        return redirect(url_for("admin.login"))
+    skill = Skill.query.get_or_404(skill_id) if skill_id else Skill()
+    form = SkillForm(obj=skill)
+    if form.validate_on_submit():
+        skill.name, skill.icon, skill.description = form.name.data, form.icon.data, form.description.data
+        skill.position = _display_order(form.position.data)
+        try:
+            db.session.add(skill)
+            db.session.commit()
+        except SQLAlchemyError:
+            db.session.rollback()
+            current_app.logger.exception("Failed to save skill")
+            abort(500)
+        flash("Skill saved successfully!", "success")
+        return redirect(url_for("admin.skills"))
+    return render_template("admin/skill_form.html", form=form, title="Edit Skill" if skill_id else "Add Skill")
+
+
+@admin.route("/skills/delete/<int:skill_id>", methods=["POST"])
+def delete_skill(skill_id):
+    if not session.get("admin_logged_in"):
+        return redirect(url_for("admin.login"))
+    try:
+        db.session.delete(Skill.query.get_or_404(skill_id))
+        db.session.commit()
+    except SQLAlchemyError:
+        db.session.rollback()
+        current_app.logger.exception("Failed to delete skill")
+        abort(500)
+    flash("Skill deleted successfully!", "success")
+    return redirect(url_for("admin.skills"))
+
+
+@admin.route("/timeline")
+def timeline():
+    if not session.get("admin_logged_in"):
+        return redirect(url_for("admin.login"))
+    entries = TimelineEntry.query.order_by(TimelineEntry.position, TimelineEntry.id).all()
+    return render_template("admin/timeline.html", entries=entries)
+
+
+@admin.route("/timeline/add", methods=["GET", "POST"])
+@admin.route("/timeline/edit/<int:entry_id>", methods=["GET", "POST"])
+def edit_timeline_entry(entry_id=None):
+    if not session.get("admin_logged_in"):
+        return redirect(url_for("admin.login"))
+    entry = TimelineEntry.query.get_or_404(entry_id) if entry_id else TimelineEntry()
+    form = TimelineEntryForm(obj=entry)
+    if form.validate_on_submit():
+        kind = form.kind.data.strip().lower()
+        if kind not in {"experience", "achievement"}:
+            form.kind.errors.append("Choose either experience or achievement.")
+        else:
+            entry.kind, entry.year, entry.title = kind, form.year.data, form.title.data
+            entry.organization, entry.description = form.organization.data, form.description.data
+            entry.position = _display_order(form.position.data)
+            try:
+                db.session.add(entry)
+                db.session.commit()
+            except SQLAlchemyError:
+                db.session.rollback()
+                current_app.logger.exception("Failed to save timeline entry")
+                abort(500)
+            flash("Timeline entry saved successfully!", "success")
+            return redirect(url_for("admin.timeline"))
+    return render_template("admin/timeline_form.html", form=form, title="Edit Timeline Entry" if entry_id else "Add Timeline Entry")
+
+
+@admin.route("/timeline/delete/<int:entry_id>", methods=["POST"])
+def delete_timeline_entry(entry_id):
+    if not session.get("admin_logged_in"):
+        return redirect(url_for("admin.login"))
+    try:
+        db.session.delete(TimelineEntry.query.get_or_404(entry_id))
+        db.session.commit()
+    except SQLAlchemyError:
+        db.session.rollback()
+        current_app.logger.exception("Failed to delete timeline entry")
+        abort(500)
+    flash("Timeline entry deleted successfully!", "success")
+    return redirect(url_for("admin.timeline"))
 
 
 

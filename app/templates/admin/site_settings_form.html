@@ -1,0 +1,7 @@
+{% extends "base.html" %}
+{% block title %}Edit Site Copy{% endblock %}
+{% block content %}
+<section class="admin-dashboard"><div class="admin-hero"><div class="hero-copy"><p class="eyebrow">Content editor</p><h1>Section text & stats</h1><p class="hero-subtitle">Edit the remaining headings, descriptions, and Home/About highlights.</p></div><div class="dashboard-actions"><a href="{{ url_for('admin.dashboard') }}" class="btn-secondary">Back to dashboard</a></div></div>
+<div class="messages-panel"><form method="POST" class="admin-form">{{ form.hidden_tag() }}
+{% for field in [form.hero_greeting, form.projects_stat, form.technologies_stat, form.journey_stat, form.projects_heading, form.projects_description, form.about_achievement, form.about_projects, form.skills_heading, form.skills_description, form.experience_heading, form.experience_description, form.contact_heading, form.contact_description] %}<div class="input-group">{{ field.label }}{{ field(class="form-control") }}{% for error in field.errors %}<small class="form-error">{{ error }}</small>{% endfor %}</div>{% endfor %}{{ form.submit(class="btn-primary") }}</form></div></section>
+{% endblock %}

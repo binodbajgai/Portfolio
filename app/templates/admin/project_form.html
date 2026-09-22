@@ -66,6 +66,9 @@
             <div class="input-group">
                 {{ form.image.label }}
                 {{ form.image(class="form-control") }}
+                {% if project and project.image %}
+                    <p class="form-hint">Current image: {{ project.image }}</p>
+                {% endif %}
                 {% for error in form.image.errors %}
                     <small class="form-error">{{ error }}</small>
                 {% endfor %}

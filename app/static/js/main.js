@@ -6,6 +6,7 @@ const navbar = document.querySelector(".navbar");
 
 window.addEventListener("scroll", () => {
 
+    if (!navbar) return;
     if (window.scrollY > 50) {
         navbar.classList.add("scrolled");
     } else {
@@ -18,14 +19,11 @@ window.addEventListener("scroll", () => {
 // TYPING EFFECT
 // ===============================
 
-const roles = [
-    "AI Developer",
-    "Python Developer",
-    "Flask Developer",
-    "Backend Developer"
-];
-
 const typingElement = document.getElementById("typing-role");
+const roles = (typingElement?.dataset.roles || "AI Developer,Python Developer,Flask Developer,Backend Developer")
+    .split(",")
+    .map((role) => role.trim())
+    .filter(Boolean);
 
 let roleIndex = 0;
 let charIndex = 0;
@@ -69,7 +67,7 @@ function typeRole() {
 
 }
 
-typeRole();
+if (typingElement && roles.length) typeRole();
 
 // ===============================
 // SCROLL PROGRESS BAR
@@ -88,7 +86,7 @@ window.addEventListener("scroll", () => {
     const progress =
         (scrollTop / documentHeight) * 100;
 
-    progressBar.style.width = progress + "%";
+    if (progressBar) progressBar.style.width = progress + "%";
 
 });
 

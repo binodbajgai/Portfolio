@@ -28,6 +28,25 @@ def _required_env(name):
     return value
 
 
+def _session_lifetime():
+
+    value = os.getenv("SESSION_LIFETIME_DAYS", "30").strip()
+
+    try:
+        days = int(value)
+    except ValueError as error:
+        raise RuntimeError(
+            "SESSION_LIFETIME_DAYS must be a positive whole number"
+        ) from error
+
+    if days <= 0:
+        raise RuntimeError(
+            "SESSION_LIFETIME_DAYS must be a positive whole number"
+        )
+
+    return timedelta(days=days)
+
+
 def _database_uri():
 
     value = _required_env("DATABASE_URL")
@@ -64,4 +83,4 @@ class Config:
     SESSION_COOKIE_SECURE = _bool_env("SESSION_COOKIE_SECURE", default=True)
     SESSION_COOKIE_HTTPONLY = True
     SESSION_COOKIE_SAMESITE = "Lax"
-    PERMANENT_SESSION_LIFETIME = timedelta(hours=8)
+    PERMANENT_SESSION_LIFETIME = _session_lifetime()
