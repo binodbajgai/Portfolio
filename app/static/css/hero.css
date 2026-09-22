@@ -4,14 +4,16 @@
 
 .hero{
     position:relative;
-    min-height:100vh;
-    padding:140px 8% 80px;
+    /* Reserve the navbar height so the summary cards remain in view on
+       desktop rather than starting below the first screen. */
+    min-height:calc(100vh - 80px);
+    padding:36px 8% 0;
     background:#070B1C;
     overflow:hidden;
 
     display:flex;
     flex-direction:column;
-    justify-content:center;
+    justify-content:flex-start;
 }
 
 /* Background Glow */
@@ -64,7 +66,7 @@
 
     max-width:1400px;
 
-    margin:auto;
+    margin:0 auto;
 
     width:100%;
 
@@ -625,9 +627,9 @@
 
 .js{
 
-    top:50%;
-    right:-25px;
-    transform:translateY(-50%);
+    /* Keep JavaScript on the lower-right arc, away from Git. */
+    top:66%;
+    right:4%;
 
 }
 
@@ -648,9 +650,10 @@
 
 .git{
 
-    top:50%;
-    left:-25px;
-    transform:translateY(-50%);
+    /* Keep Git on the upper-left arc; it remains well separated while the
+       parent orbit rotates. */
+    top:18%;
+    left:4%;
 
 }
 
