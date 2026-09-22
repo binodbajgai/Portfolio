@@ -571,21 +571,11 @@
 
     position:absolute;
 
-    /* Keep each 64px badge safely inside both decorative rings. */
-    width:370px;
+    width:520px;
 
-    height:370px;
-
-    top:50%;
-
-    left:50%;
-
-    margin:-185px 0 0 -185px;
+    height:520px;
 
     border-radius:50%;
-
-    /* The profile image has z-index: 2; keep all orbit badges visible above it. */
-    z-index:3;
 
     animation:orbitRotate 28s linear infinite;
 
@@ -623,7 +613,7 @@
 
 .python{
 
-    top:4px;
+    top:-20px;
     left:50%;
     transform:translateX(-50%);
 
@@ -631,29 +621,29 @@
 
 .flask{
 
-    top:70px;
-    right:6px;
+    top:80px;
+    right:20px;
 
 }
 
 .js{
 
-    /* Keep JavaScript on the lower-right arc, away from Git. */
-    top:66%;
-    right:6%;
+    top:50%;
+    right:-25px;
+    transform:translateY(-50%);
 
 }
 
 .ai{
 
-    bottom:70px;
-    right:6px;
+    bottom:80px;
+    right:20px;
 
 }
 
 .mysql{
 
-    bottom:4px;
+    bottom:-20px;
     left:50%;
     transform:translateX(-50%);
 
@@ -661,10 +651,9 @@
 
 .git{
 
-    /* Keep Git on the upper-left arc; it remains well separated while the
-       parent orbit rotates. */
-    top:18%;
-    left:6%;
+    top:50%;
+    left:-25px;
+    transform:translateY(-50%);
 
 }
 
