@@ -1,4 +1,6 @@
-from flask import Blueprint, abort, current_app, render_template, flash, redirect, url_for
+from xml.etree.ElementTree import Element, SubElement, tostring
+
+from flask import Blueprint, Response, abort, current_app, render_template, flash, redirect, url_for
 from sqlalchemy.exc import SQLAlchemyError
 
 from .database import db
@@ -10,6 +12,31 @@ from .models.content import Profile, SiteSettings, Skill, TimelineEntry
 from .storage import cv_url
 
 main = Blueprint("main", __name__)
+
+CANONICAL_SITE_URL = "https://binodbajgai.com.np/"
+
+
+@main.get("/sitemap.xml")
+def sitemap():
+    """Serve the sitemap for public, indexable portfolio pages."""
+    urlset = Element(
+        "urlset",
+        xmlns="http://www.sitemaps.org/schemas/sitemap/0.9",
+    )
+    url = SubElement(urlset, "url")
+    SubElement(url, "loc").text = CANONICAL_SITE_URL
+
+    xml = tostring(urlset, encoding="utf-8", xml_declaration=True)
+    return Response(xml, content_type="application/xml; charset=utf-8")
+
+
+@main.get("/robots.txt")
+def robots():
+    return Response(
+        "User-agent: *\nAllow: /\nDisallow: /admin/\n\n"
+        f"Sitemap: {CANONICAL_SITE_URL}sitemap.xml\n",
+        content_type="text/plain; charset=utf-8",
+    )
 
 
 @main.route("/", methods=["GET", "POST"])
