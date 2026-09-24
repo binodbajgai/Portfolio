@@ -6,17 +6,17 @@
 
     <title>{% block title %}Binod Bajgai{% endblock %}</title>
     <meta name="description"
-          content="Binod Bajgai's portfolio showcasing Python, Flask, AI, and modern web development projects.">
-    <meta property="og:title" content="Binod Bajgai">
+          content="{% block meta_description %}Binod Bajgai's portfolio showcasing Python, Flask, AI, and modern web development projects.{% endblock %}">
+    <meta property="og:title" content="{% block og_title %}Binod Bajgai{% endblock %}">
     <meta property="og:description"
-          content="Portfolio showcasing Python, Flask, AI, and modern web development projects.">
+          content="{% block og_description %}Portfolio showcasing Python, Flask, AI, and modern web development projects.{% endblock %}">
     <meta property="og:type" content="website">
     <meta property="og:url" content="{{ request.base_url }}">
     <meta property="og:image" content="{{ url_for('static', filename='images/binod.jpeg', _external=True) }}">
     <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="Binod Bajgai">
+    <meta name="twitter:title" content="{% block twitter_title %}Binod Bajgai{% endblock %}">
     <meta name="twitter:description"
-          content="Portfolio showcasing Python, Flask, AI, and modern web development projects.">
+          content="{% block twitter_description %}Portfolio showcasing Python, Flask, AI, and modern web development projects.{% endblock %}">
     <meta name="twitter:image" content="{{ url_for('static', filename='images/binod.jpeg', _external=True) }}">
     <meta name="robots" content="index, follow">
     <meta name="theme-color" content="#070B1C">
